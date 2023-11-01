@@ -1,69 +1,46 @@
--- MySQL Workbench Forward Engineering
+import mysql.connector
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `mydb` ;
-
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
-
--- -----------------------------------------------------
--- Table `mydb`.`usuario`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`usuario` (
-  `user` VARCHAR(20) NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
-  `nome` VARCHAR(45) NOT NULL,
-  `senha` VARCHAR(45) NOT NULL,
-  `sistema_id` INT NOT NULL,
-  PRIMARY KEY (`user`))
-ENGINE = InnoDB;
+def novo_user(user, email, nome, senha):
+    conexao = mysql.connector.connect(
+      host="127.0.0.1",
+      user="root",
+      password="root",
+      database="mydb"
+    )
+    cursor = conexao.cursor()
+    novo_elemento = (user, email, nome, senha)
+    inserir_dados = "INSERT INTO usuario (user, email, nome, senha) VALUES (%s, %s, %s, %s)"
+    cursor.execute(inserir_dados, novo_elemento)
+    conexao.commit()
 
 
--- -----------------------------------------------------
--- Table `mydb`.`postagem`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`postagem` (
-  `idpostagem` INT NOT NULL,
-  `data` DATETIME NOT NULL,
-  `usuario_user` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`idpostagem`),
-  INDEX `fk_postagem_usuario1_idx` (`usuario_user` ASC) VISIBLE,
-  CONSTRAINT `fk_postagem_usuario1`
-    FOREIGN KEY (`usuario_user`)
-    REFERENCES `mydb`.`usuario` (`user`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    cursor.close()
+    conexao.close()
 
+def buscar_usuario(user):
+    conexao = mysql.connector.connect(
+        host="127.0.0.1",
+        user="root",
+        password="root",
+        database="mydb"
+    )
+    cursor = conexao.cursor()
 
--- -----------------------------------------------------
--- Table `mydb`.`mensagem`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`mensagem` (
-  `idmensagem` INT NOT NULL,
-  `mensagem` VARCHAR(100) NOT NULL,
-  `data` DATETIME NOT NULL,
-  `likes` INT NOT NULL,
-  `usuario_user` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`idmensagem`),
-  INDEX `fk_mensagem_usuario_idx` (`usuario_user` ASC) VISIBLE,
-  CONSTRAINT `fk_mensagem_usuario`
-    FOREIGN KEY (`usuario_user`)
-    REFERENCES `mydb`.`usuario` (`user`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    comando = "SELECT * FROM usuario WHERE user = %s"
+    comando2 = "SELECT * FROM usuario"
+    # cursor.execute(comando, (user,))
+    cursor.execute(comando2)
+    resultados = cursor.fetchall()
+    if resultados == []:
+      print('Não encontrado...')
+    else:
+      #print(resultados)
+      for i in resultados:
+        print(i[0])
+        print(i[1])
 
+    cursor.close()
+    conexao.close()
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+# novo_user('lucas', 'lucas@gmail.com', 'lucas', '1234')
+buscar_usuario('lucas')
