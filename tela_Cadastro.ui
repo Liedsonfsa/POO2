@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>530</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>530</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>300</width>
+    <height>16777215</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="maximumSize">
+    <size>
+     <width>300</width>
+     <height>16777215</height>
+    </size>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="tela_login">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(170, 232, 185);
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="tela_login_cima">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-image: url(:/icones/logo_full_mini.png);
+background-repeat: norepeat; 
+background-position: center</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="tela_login_meio">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>300</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="4" column="0" colspan="2">
+           <widget class="QPushButton" name="botao_ir_cadastro">
+            <property name="maximumSize">
+             <size>
+              <width>300</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	border: 3px solid rgb(146, 232, 141);
+	border-radius: 4px;
+	padding: 1px;
+	background-color:  rgb(146, 232, 141);
+	color: rgb(0,0,0);
+	
+	font: 87 11pt &quot;Arial Black&quot;;
+}
+QPushButton:hover {
+	background-color:  rgb(95, 232, 71);
+	
+}
+QPushButton:pressed {
+	background-color: rgb(12, 255, 0);
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Cadastrar</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <widget class="QLineEdit" name="caixa_senha">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>300</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLineEdit {
+	border: 3px solid rgb(146, 232, 141);
+	border-radius: 4px;
+	padding: 15px;
+	background-color: rgb(151, 206, 164);
+	color: rgb(0,0,0);
+	
+	font: 87 11pt &quot;Arial Black&quot;;
+}
+QLineEdit:hover {
+	border: 4px solid rgb(95, 232, 71);
+	
+}
+QLineEdit:focus {
+	border: 4px solid rgb(0, 0, 0);
+	color :rgb(0,0,0)
+}
+</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="placeholderText">
+             <string>SENHA</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QLineEdit" name="caixa_usuario">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>300</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLineEdit {
+	border: 3px solid rgb(146, 232, 141);
+	border-radius: 4px;
+	padding: 15px;
+	background-color: rgb(151, 206, 164);
+	color: rgb(0,0,0);
+	
+	font: 87 11pt &quot;Arial Black&quot;;
+}
+QLineEdit:hover {
+	border: 4px solid rgb(95, 232, 71);
+	
+}
+QLineEdit:focus {
+	border: 4px solid rgb(0, 0, 0);
+	color :rgb(0,0,0)
+}
+</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="placeholderText">
+             <string>USUÁRIO</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QLineEdit" name="caixa_email">
+            <property name="styleSheet">
+             <string notr="true">QLineEdit {
+	border: 3px solid rgb(146, 232, 141);
+	border-radius: 4px;
+	padding: 15px;
+	background-color: rgb(151, 206, 164);
+	color: rgb(0,0,0);
+	
+	font: 87 11pt &quot;Arial Black&quot;;
+}
+QLineEdit:hover {
+	border: 4px solid rgb(95, 232, 71);
+	
+}
+QLineEdit:focus {
+	border: 4px solid rgb(0, 0, 0);
+	color :rgb(0,0,0)
+}
+</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="placeholderText">
+             <string>EMAIL</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="2">
+           <widget class="QLineEdit" name="caixa_nome">
+            <property name="styleSheet">
+             <string notr="true">QLineEdit {
+	border: 3px solid rgb(146, 232, 141);
+	border-radius: 4px;
+	padding: 15px;
+	background-color: rgb(151, 206, 164);
+	color: rgb(0,0,0);
+	
+	font: 87 11pt &quot;Arial Black&quot;;
+}
+QLineEdit:hover {
+	border: 4px solid rgb(95, 232, 71);
+	
+}
+QLineEdit:focus {
+	border: 4px solid rgb(0, 0, 0);
+	color :rgb(0,0,0)
+}
+</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="placeholderText">
+             <string>NOME</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="tela_login_baixo">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QPushButton" name="botao_sair">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>70</y>
+            <width>91</width>
+            <height>30</height>
+           </rect>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>150</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+	border: 3px solid rgb(146, 232, 141);
+	border-radius: 4px;
+	padding: 1px;
+	background-color:  rgb(146, 232, 141);
+	color: rgb(0,0,0);
+	
+	font: 87 11pt &quot;Arial Black&quot;;
+}
+QPushButton:hover {
+	background-color:  rgb(95, 232, 71);
+	
+}
+QPushButton:pressed {
+	background-color: rgb(12, 255, 0);
+}
+</string>
+          </property>
+          <property name="text">
+           <string>Voltar</string>
+          </property>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources>
+  <include location="icones.qrc"/>
+ </resources>
+ <connections/>
+</ui>

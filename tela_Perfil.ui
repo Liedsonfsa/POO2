@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>530</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>530</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>300</width>
+    <height>16777215</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="maximumSize">
+    <size>
+     <width>300</width>
+     <height>16777215</height>
+    </size>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="tela_perfil">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(170, 232, 185);
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="perfil_infos">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>80</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QFrame" name="foto_perfil">
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QFrame{
+	
+	image: url(:/icones/pato.jpg);
+	
+	border-radius : 100px;
+	border: 3px solid rgb(54, 255, 32)
+}</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="infos">
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>6</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="Nome">
+               <property name="styleSheet">
+                <string notr="true">font: 87 15pt &quot;Arial Black&quot;;</string>
+               </property>
+               <property name="text">
+                <string>Nome do Usuario</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="Email">
+               <property name="text">
+                <string>email_do_usuario@mail.com</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="tela_perfil_meio">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>300</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="horario">
+            <property name="text">
+             <string>Horário</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" rowspan="2">
+           <widget class="QFrame" name="frame">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QPushButton" name="antPost">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+	border: 3px solid rgb(146, 232, 141);
+	border-radius: 4px;
+	padding: 1px;
+	background-color:  rgb(146, 232, 141);
+	color: rgb(0,0,0);
+	
+	font: 87 11pt &quot;Arial Black&quot;;
+}
+QPushButton:hover {
+	background-color:  rgb(95, 232, 71);
+	
+}
+QPushButton:pressed {
+	background-color: rgb(12, 255, 0);
+}
+</string>
+               </property>
+               <property name="text">
+                <string>Post Anterior</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="proxPost">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+	border: 3px solid rgb(146, 232, 141);
+	border-radius: 4px;
+	padding: 1px;
+	background-color:  rgb(146, 232, 141);
+	color: rgb(0,0,0);
+	
+	font: 87 11pt &quot;Arial Black&quot;;
+}
+QPushButton:hover {
+	background-color:  rgb(95, 232, 71);
+	
+}
+QPushButton:pressed {
+	background-color: rgb(12, 255, 0);
+}
+</string>
+               </property>
+               <property name="text">
+                <string>Próximo Post</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QTextBrowser" name="postArea"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="tela_perfil_baixo">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QPushButton" name="botao_conversas">
+            <property name="maximumSize">
+             <size>
+              <width>150</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	border: 3px solid rgb(146, 232, 141);
+	border-radius: 4px;
+	padding: 1px;
+	background-color:  rgb(146, 232, 141);
+	color: rgb(0,0,0);
+	
+	font: 87 11pt &quot;Arial Black&quot;;
+}
+QPushButton:hover {
+	background-color:  rgb(95, 232, 71);
+	
+}
+QPushButton:pressed {
+	background-color: rgb(12, 255, 0);
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Conversas</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="botao_inicio">
+            <property name="maximumSize">
+             <size>
+              <width>150</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	border: 3px solid rgb(146, 232, 141);
+	border-radius: 4px;
+	padding: 1px;
+	background-color:  rgb(146, 232, 141);
+	color: rgb(0,0,0);
+	
+	font: 87 11pt &quot;Arial Black&quot;;
+}
+QPushButton:hover {
+	background-color:  rgb(95, 232, 71);
+	
+}
+QPushButton:pressed {
+	background-color: rgb(12, 255, 0);
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Inicio</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="botao_sair">
+            <property name="maximumSize">
+             <size>
+              <width>150</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	border: 3px solid rgb(146, 232, 141);
+	border-radius: 4px;
+	padding: 1px;
+	background-color:  rgb(146, 232, 141);
+	color: rgb(0,0,0);
+	
+	font: 87 11pt &quot;Arial Black&quot;;
+}
+QPushButton:hover {
+	background-color:  rgb(95, 232, 71);
+	
+}
+QPushButton:pressed {
+	background-color: rgb(12, 255, 0);
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Sair</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources>
+  <include location="icones.qrc"/>
+ </resources>
+ <connections/>
+</ui>

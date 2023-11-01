@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="icones">
+    <file>pato.jpg</file>
+    <file>logo_full_mini.png</file>
+    <file>3barras.png</file>
+    <file>logo.jpg</file>
+    <file>logo_full.jpg</file>
+    <file>logo_mini.jpg</file>
+    <file>logo_transparente.png</file>
+  </qresource>
+</RCC>
