@@ -59,17 +59,17 @@ class Main(QMainWindow, Ui_Main):
     def __init__(self):
         super(Main, self).__init__(None)
         self.setupUi(self)
-        
+
 
         self.cad = Sistema()
         self.tela_inicial.botao_ir_cadastro.clicked.connect(self.abrirTelaCadastro) # funções dos botões da tela principal
         self.timeline = Timeline()
-        
+
         self.tela_inicial.botao_logar.clicked.connect(self.logar)
 
         self.tela_cadastro.botao_ir_cadastro.clicked.connect(self.botaoCadastra)
         self.tela_cadastro.botao_sair.clicked.connect(self.voltarCadastro)
-        
+
         self.tela_principal.botao_perfil.clicked.connect(self.abrirPerfil)
         self.tela_cadastro.botao_sair.clicked.connect(self.voltarCadastro)
 
@@ -79,7 +79,7 @@ class Main(QMainWindow, Ui_Main):
         self.tela_perfil.botao_sair.clicked.connect(self.abrirTelaInicial)
 
         self.tela_principal.botao_inicio.clicked.connect(self.sairSistema)
-        
+
         self.tela_inicial.botao_sair.clicked.connect(QtWidgets.qApp.quit)
 
         self.tela_principal.botao_conversas.clicked.connect(self.abrirTelaConversas)
@@ -88,7 +88,6 @@ class Main(QMainWindow, Ui_Main):
         self.tela_principal.botao_perfil.clicked.connect(self.navegarEntrePosts)
 
     def botaoCadastra(self):
-        print('inicio.....')
         nome = self.tela_cadastro.caixa_nome.text()
         email = self.tela_cadastro.caixa_email.text()
         senha = self.tela_cadastro.caixa_senha.text()
@@ -100,17 +99,14 @@ class Main(QMainWindow, Ui_Main):
         search_user = 'SELECT * FROM usuario WHERE user = %s'
         search_email = 'SELECT * FROM usuario WHERE email = %s'
         new_user = "INSERT INTO usuario (user, email, nome, senha) VALUES (%s, %s, %s, %s)"
-        
+
         if not(nome == '' or email == '' or senha == '' or user == ''):
-            print('......')
             cursor.execute(search_email, (email, ))
             e = cursor.fetchone()
             cursor.execute(search_user, (user, ))
             u = cursor.fetchone()
-            print(e)
-            print(u)
             if u != None or e != None:
-                if u != None and e != []:
+                if u != None and e != None:
                     QMessageBox.information(None,'Error', 'Email e Usuário já cadastrados!')
                     self.tela_cadastro.caixa_email.setText('')
                     self.tela_cadastro.caixa_usuario.setText('')
@@ -121,8 +117,8 @@ class Main(QMainWindow, Ui_Main):
                     QMessageBox.information(None,'Usuário', 'Nome de usuário já cadastrado!')
                     self.tela_cadastro.caixa_usuario.setText('')
             else:
-                usuario = Usuario(nome, user, senha, email)
-                self.cad.cadastrar(usuario)
+                # usuario = Usuario(nome, user, senha, email)
+                # self.cad.cadastrar(usuario)
                 QMessageBox.information(None,'Cadastro', 'Cadastro realizado com sucesso!')
                 self.tela_cadastro.caixa_email.setText('')
                 self.tela_cadastro.caixa_nome.setText('')
@@ -133,16 +129,15 @@ class Main(QMainWindow, Ui_Main):
                 self.QtStack.setCurrentIndex(0)
         else:
             QMessageBox.information(None,'POOII', 'Todos os valores devem ser preenchidos!')
-        
+
         cursor.close()
         con.close()
-    
-    
-    
+
+
+
     def logar(self):
         user = self.tela_inicial.caixa_usuario.text()
         senha = self.tela_inicial.caixa_senha.text()
-        # usuario = self.cad.checkPassword(user, senha)
         con = self.conexao.getConexao()
         cursor = con.cursor()
         comando = "SELECT * FROM usuario WHERE user = %s"
@@ -153,70 +148,125 @@ class Main(QMainWindow, Ui_Main):
         if usuario != None and usuario[3] == senha:
             self.QtStack.setCurrentIndex(3)
             self.tela_perfil.Nome.setText(usuario[0])
-            self.tela_perfil.Email.setText(usuario[2])
+            self.tela_perfil.Email.setText(usuario[1])
             self.tela_perfil.horario.setText('Seus últimos posts')
         else:
             QMessageBox.information(None,'POOII', 'Login ou senha errados!')
             self.tela_inicial.caixa_senha.setText('')
             self.tela_inicial.caixa_usuario.setText('')
-        
+
         self.tela_inicial.caixa_senha.setText('')
-    
+        con.close()
+        cursor.close()
+
     def navegarEntrePosts(self):
         usuario = self.tela_perfil.Nome.text()
-        u = self.cad.cadastrado(usuario)
-        m = u.avancar()
+        #u = self.cad.cadastrado(usuario)
+
+        con = self.conexao.getConexao()
+        con.reconnect()
+        cursor = con.cursor()
+
+        text = ''
+        comando = 'SELECT * FROM mensagem WHERE usuario_user = %s'
+        cursor.execute(comando, usuario)
+        posts = cursor.fetchall()
+
+        if posts == list:
+            print()
+        else:
+            for post in posts:
+                text = text + f'{post[1]}\n\n'
         
-        self.tela_perfil.postArea.setText(m)
+        #m = u.avancar()
+
+        self.tela_perfil.postArea.setText(text)
 
     def postar(self):
         post = self.tela_principal.texto_postar.toPlainText()
-        
-        usuario = self.tela_perfil.Nome.text()
-        m = Mensagens(post, usuario)
-        u = self.cad.cadastrado(usuario)
-        u.getPosts(m)
-        
-        self.timeline.getPost(m)
-        posts = self.timeline.posts()
 
-        self.tela_principal.horarioPost.setText(str(m._data))
-        self.tela_principal.textBrowser.setText(posts)
+        usuario = self.tela_perfil.Nome.text()
+        con = self.conexao.getConexao()
+        con.reconnect()
+        print(con._host)
+        cursor = con.cursor()
+        print(cursor)
+        comando = 'INSERT INTO mensagem (mensagem, data, likes, usuario_user) VALUES ( %s, %s, %s, %s)'
+        data = datetime.now()
+        info = (post, str(data), 0, usuario)
+
+        cursor.execute('SELECT * FROM mensagem')
+        teste = cursor.fetchall()
+
+        text = ''
+        if(teste == list):
+            print()
+        else:
+            for i in teste:
+                text = text + f'{i[1]}\n\n'
+        
+
+        cursor.execute(comando, info)
+        
+
+        con.commit()
+        con.close()
+        
+        # print(teste)
+
+        # self.timeline.getPost(teste[1])
+        # posts = self.timeline.posts()
+
+        # self.tela_principal.horarioPost.setText(str(m._data))
+        self.tela_principal.textBrowser.setText(text)
         self.tela_principal.texto_postar.setText('')
-    
-    
+
+
     def postarConversa(self):
         post = self.tela_conversas.sendtext.text()
         # self.tela_conversas.sendandrec.setText(post)
         self.tela_conversas.sendtext.setText('')
-    
-    
+
+
     def abrirPerfil(self):
         self.QtStack.setCurrentIndex(4)
         self.tela_inicial.caixa_senha.setText('')
-    
+
     def abrirTelaConversas(self):
         self.QtStack.setCurrentIndex(5)
-    
+
     def abrirTelaInicial(self):
         self.QtStack.setCurrentIndex(0)
-    
+
     def abrirTelaCadastro(self):
         self.QtStack.setCurrentIndex(1)
-        # self.tela_cadastro.caixa_nome.setText('liedson')
-        # self.tela_cadastro.caixa_email.setText('liedson@gmail.com')
-        # self.tela_cadastro.caixa_senha.setText('12345')
-        # self.tela_cadastro.caixa_usuario.setText('liedson')
+
 
     def abrirTelaLogin(self):
         self.QtStack.setCurrentIndex(2)
-    
+
     def sairSistema(self):
         self.QtStack.setCurrentIndex(0)
-    
+
     def abrirTelaPrincipal(self):
         self.QtStack.setCurrentIndex(3)
         self.tela_inicial.caixa_senha.setText('')
+        con = self.conexao.getConexao()
+        con.reconnect()
+        cursor = con.cursor()
+
+        text = ''
+        comando = 'SELECT * FROM mensagem'
+        cursor.execute(comando)
+        posts = cursor.fetchall()
+
+        if posts == list:
+            print()
+        else:
+            for post in posts:
+                text = text + f'{post[1]}\n\n'
+        
+        self.tela_principal.textBrowser.setText(text)
     
     def voltarCadastro(self):
         self.QtStack.setCurrentIndex(0)
@@ -224,12 +274,12 @@ class Main(QMainWindow, Ui_Main):
         self.tela_cadastro.caixa_nome.setText('')
         self.tela_cadastro.caixa_senha.setText('')
         self.tela_cadastro.caixa_email.setText('')
-    
+
     def voltarLogin(self):
         self.QtStack.setCurrentIndex(0)
         self.tela_inicial.caixa_senha.setText('')
         self.tela_inicial.caixa_usuario.setText('')
-    
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

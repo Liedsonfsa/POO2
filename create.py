@@ -26,19 +26,20 @@ def buscar_usuario(user):
     )
     cursor = conexao.cursor()
 
-    comando = "SELECT * FROM usuario WHERE user = %s"
-    comando2 = "SELECT * FROM usuario"
+    comando = "SELECT * FROM mensagem WHERE usuario_user = teste01"
+    comando2 = "SELECT * FROM mensagem"
     # cursor.execute(comando, (user,))
     cursor.execute(comando2)
     resultados = cursor.fetchall()
-    if resultados == []:
+    if resultados == list:
       print('Não encontrado...')
     else:
-      #print(resultados)
+      print(resultados)
       for i in resultados:
-        print(i[0])
-        print(i[1])
-
+        print(i[1], end=', ')
+        print(i[4])
+        
+    
     cursor.close()
     conexao.close()
 
