@@ -92,7 +92,9 @@ class Main(QMainWindow, Ui_Main):
         email = self.tela_cadastro.caixa_email.text()
         senha = self.tela_cadastro.caixa_senha.text()
         user = self.tela_cadastro.caixa_usuario.text()
+        
         con = self.conexao.getConexao()
+        con.reconnect()
         print(con._host)
         new = (user, email, nome, senha)
         cursor = con.cursor()
@@ -117,8 +119,6 @@ class Main(QMainWindow, Ui_Main):
                     QMessageBox.information(None,'Usuário', 'Nome de usuário já cadastrado!')
                     self.tela_cadastro.caixa_usuario.setText('')
             else:
-                # usuario = Usuario(nome, user, senha, email)
-                # self.cad.cadastrar(usuario)
                 QMessageBox.information(None,'Cadastro', 'Cadastro realizado com sucesso!')
                 self.tela_cadastro.caixa_email.setText('')
                 self.tela_cadastro.caixa_nome.setText('')
@@ -150,6 +150,7 @@ class Main(QMainWindow, Ui_Main):
             self.tela_perfil.Nome.setText(usuario[0])
             self.tela_perfil.Email.setText(usuario[1])
             self.tela_perfil.horario.setText('Seus últimos posts')
+            self.addText()
         else:
             QMessageBox.information(None,'POOII', 'Login ou senha errados!')
             self.tela_inicial.caixa_senha.setText('')
@@ -161,7 +162,6 @@ class Main(QMainWindow, Ui_Main):
 
     def navegarEntrePosts(self):
         usuario = self.tela_perfil.Nome.text()
-        #u = self.cad.cadastrado(usuario)
 
         con = self.conexao.getConexao()
         con.reconnect()
@@ -171,14 +171,13 @@ class Main(QMainWindow, Ui_Main):
         comando = 'SELECT * FROM mensagem WHERE usuario_user = %s'
         cursor.execute(comando, usuario)
         posts = cursor.fetchall()
+        print(posts)
 
         if posts == list:
             print()
         else:
             for post in posts:
                 text = text + f'{post[1]}\n\n'
-        
-        #m = u.avancar()
 
         self.tela_perfil.postArea.setText(text)
 
@@ -195,29 +194,22 @@ class Main(QMainWindow, Ui_Main):
         data = datetime.now()
         info = (post, str(data), 0, usuario)
 
+        cursor.execute(comando, info)
+
         cursor.execute('SELECT * FROM mensagem')
         teste = cursor.fetchall()
 
         text = ''
+        # print(teste)
         if(teste == list):
             print()
         else:
-            for i in teste:
-                text = text + f'{i[1]}\n\n'
+            for post in teste:
+                text = text + f'\n{post[4]}             {post[2]}\n{post[1]}\n'
         
-
-        cursor.execute(comando, info)
-        
-
         con.commit()
         con.close()
         
-        # print(teste)
-
-        # self.timeline.getPost(teste[1])
-        # posts = self.timeline.posts()
-
-        # self.tela_principal.horarioPost.setText(str(m._data))
         self.tela_principal.textBrowser.setText(text)
         self.tela_principal.texto_postar.setText('')
 
@@ -228,9 +220,35 @@ class Main(QMainWindow, Ui_Main):
         self.tela_conversas.sendtext.setText('')
 
 
-    def abrirPerfil(self):
+    def abrirPerfil(self): # piadbsdoj
         self.QtStack.setCurrentIndex(4)
         self.tela_inicial.caixa_senha.setText('')
+        usuario = self.tela_perfil.Nome.text()
+        #u = self.cad.cadastrado(usuario)
+
+        con = self.conexao.getConexao()
+        con.reconnect()
+        cursor = con.cursor()
+
+        text = ''
+        comando = 'SELECT * FROM mensagem'
+        cursor.execute(comando)
+        posts = cursor.fetchall()
+        print(posts)
+
+        text = ''
+        # print(posts)
+        if(posts == list):
+            print()
+        else:
+            for post in posts:
+                text = text + f'\n{post[4]}             {post[2]}\n{post[1]}\n'
+        
+        con.commit()
+        con.close()
+        
+        self.tela_principal.textBrowser.setText(text)
+        self.tela_principal.texto_postar.setText('')
 
     def abrirTelaConversas(self):
         self.QtStack.setCurrentIndex(5)
@@ -280,6 +298,30 @@ class Main(QMainWindow, Ui_Main):
         self.tela_inicial.caixa_senha.setText('')
         self.tela_inicial.caixa_usuario.setText('')
 
+    def addText(self):
+        con = self.conexao.getConexao()
+        con.reconnect()
+        cursor = con.cursor()
+
+        text = ''
+        comando = 'SELECT * FROM mensagem'
+        cursor.execute(comando)
+        posts = cursor.fetchall()
+
+        text = ''
+        # print(posts)
+        if(posts == list):
+            print()
+        else:
+            for post in posts:
+                text = text + f'\n{post[4]}             {post[2]}\n{post[1]}\n'
+        
+        con.commit()
+        con.close()
+        
+        self.tela_principal.textBrowser.setText(text)
+        self.tela_principal.texto_postar.setText('')
+    
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
