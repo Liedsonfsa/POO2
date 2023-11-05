@@ -78,60 +78,9 @@ class Tela_Perfil(object):
         self.tela_perfil_meio.setObjectName("tela_perfil_meio")
         self.gridLayout = QtWidgets.QGridLayout(self.tela_perfil_meio)
         self.gridLayout.setObjectName("gridLayout")
-        self.horario = QtWidgets.QLabel(self.tela_perfil_meio)
-        self.horario.setObjectName("horario")
-        self.gridLayout.addWidget(self.horario, 0, 0, 1, 1)
-        self.frame = QtWidgets.QFrame(self.tela_perfil_meio)
-        self.frame.setMinimumSize(QtCore.QSize(0, 30))
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame.setObjectName("frame")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.frame)
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.antPost = QtWidgets.QPushButton(self.frame)
-        self.antPost.setStyleSheet("QPushButton {\n"
-"    border: 3px solid rgb(146, 232, 141);\n"
-"    border-radius: 4px;\n"
-"    padding: 1px;\n"
-"    background-color:  rgb(146, 232, 141);\n"
-"    color: rgb(0,0,0);\n"
-"    \n"
-"    font: 87 11pt \"Arial Black\";\n"
-"}\n"
-"QPushButton:hover {\n"
-"    background-color:  rgb(95, 232, 71);\n"
-"    \n"
-"}\n"
-"QPushButton:pressed {\n"
-"    background-color: rgb(12, 255, 0);\n"
-"}\n"
-"")
-        self.antPost.setObjectName("antPost")
-        self.horizontalLayout_3.addWidget(self.antPost)
-        self.proxPost = QtWidgets.QPushButton(self.frame)
-        self.proxPost.setStyleSheet("QPushButton {\n"
-"    border: 3px solid rgb(146, 232, 141);\n"
-"    border-radius: 4px;\n"
-"    padding: 1px;\n"
-"    background-color:  rgb(146, 232, 141);\n"
-"    color: rgb(0,0,0);\n"
-"    \n"
-"    font: 87 11pt \"Arial Black\";\n"
-"}\n"
-"QPushButton:hover {\n"
-"    background-color:  rgb(95, 232, 71);\n"
-"    \n"
-"}\n"
-"QPushButton:pressed {\n"
-"    background-color: rgb(12, 255, 0);\n"
-"}\n"
-"")
-        self.proxPost.setObjectName("proxPost")
-        self.horizontalLayout_3.addWidget(self.proxPost)
-        self.gridLayout.addWidget(self.frame, 2, 0, 2, 1)
         self.postArea = QtWidgets.QTextBrowser(self.tela_perfil_meio)
         self.postArea.setObjectName("postArea")
-        self.gridLayout.addWidget(self.postArea, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.postArea, 0, 0, 1, 1)
         self.verticalLayout_2.addWidget(self.tela_perfil_meio)
         self.tela_perfil_baixo = QtWidgets.QFrame(self.tela_perfil)
         self.tela_perfil_baixo.setMaximumSize(QtCore.QSize(16777215, 50))
@@ -215,9 +164,6 @@ class Tela_Perfil(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.Nome.setText(_translate("MainWindow", "Nome do Usuario"))
         self.Email.setText(_translate("MainWindow", "email_do_usuario@mail.com"))
-        self.horario.setText(_translate("MainWindow", "Horário"))
-        self.antPost.setText(_translate("MainWindow", "Post Anterior"))
-        self.proxPost.setText(_translate("MainWindow", "Próximo Post"))
         self.botao_conversas.setText(_translate("MainWindow", "Conversas"))
         self.botao_inicio.setText(_translate("MainWindow", "Inicio"))
         self.botao_sair.setText(_translate("MainWindow", "Sair"))

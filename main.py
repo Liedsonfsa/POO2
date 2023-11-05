@@ -96,7 +96,7 @@ class Main(QMainWindow, Ui_Main):
         
         con = self.conexao.getConexao()
         con.reconnect()
-        print(con._host)
+        
         new = (user, email, nome, senha)
         cursor = con.cursor()
         search_user = 'SELECT * FROM usuario WHERE user = %s'
@@ -140,6 +140,7 @@ class Main(QMainWindow, Ui_Main):
         user = self.tela_inicial.caixa_usuario.text()
         senha = self.tela_inicial.caixa_senha.text()
         con = self.conexao.getConexao()
+        con.reconnect()
         cursor = con.cursor()
         comando = "SELECT * FROM usuario WHERE user = %s"
 
@@ -150,7 +151,6 @@ class Main(QMainWindow, Ui_Main):
             self.QtStack.setCurrentIndex(3)
             self.tela_perfil.Nome.setText(usuario[0])
             self.tela_perfil.Email.setText(usuario[1])
-            self.tela_perfil.horario.setText('Seus últimos posts')
             self.addText()
         else:
             QMessageBox.information(None,'POOII', 'Login ou senha errados!')
@@ -172,9 +172,7 @@ class Main(QMainWindow, Ui_Main):
         usuario = self.tela_perfil.Nome.text()
         con = self.conexao.getConexao()
         con.reconnect()
-        print(con._host)
         cursor = con.cursor()
-        print(cursor)
         comando = 'INSERT INTO mensagem (mensagem, data, likes, usuario_user) VALUES ( %s, %s, %s, %s)'
         data = datetime.now()
         info = (post, str(data), 0, usuario)
@@ -249,14 +247,8 @@ class Main(QMainWindow, Ui_Main):
         if(posts == list):
             print()
         else:
-            lista = []
             for post in posts:
-                texto = f'\n{post[4]}             {post[2]}\n{post[1]}\n'
-                lista.append(texto)
-            pos = len(lista) - 1
-            while pos >= 0:
-                text = text + lista[pos]
-                pos -= 1
+                text = f'\n{post[4]}             {post[2]}\n{post[1]}\n' + text
         
         con.commit()
         con.close()
@@ -278,14 +270,8 @@ class Main(QMainWindow, Ui_Main):
         if(posts == list):
             print()
         else:
-            lista = []
             for post in posts:
-                texto = f'\n{post[4]}             {post[2]}\n{post[1]}\n'
-                lista.append(texto)
-            pos = len(lista) - 1
-            while pos >= 0:
-                text = text + lista[pos]
-                pos -= 1
+                text = f'\n{post[4]}             {post[2]}\n{post[1]}\n' + text
         
         con.commit()
         con.close()

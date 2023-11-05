@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>530</height>
+    <height>534</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -403,7 +403,7 @@ QPushButton:pressed {
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="botao_sair">
+           <widget class="QPushButton" name="botao_pesquisar">
             <property name="maximumSize">
              <size>
               <width>150</width>
@@ -430,7 +430,7 @@ QPushButton:pressed {
 </string>
             </property>
             <property name="text">
-             <string>Sair</string>
+             <string>Pesquisar</string>
             </property>
            </widget>
           </item>
