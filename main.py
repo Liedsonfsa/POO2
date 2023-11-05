@@ -5,6 +5,7 @@ from conexao import Conexao
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
+from collections import deque
 
 from tela_cadastro import Tela_Cadastro
 from tela_inicial import Tela_Inicial
@@ -163,23 +164,7 @@ class Main(QMainWindow, Ui_Main):
     def navegarEntrePosts(self):
         usuario = self.tela_perfil.Nome.text()
 
-        con = self.conexao.getConexao()
-        con.reconnect()
-        cursor = con.cursor()
-
-        text = ''
-        comando = 'SELECT * FROM mensagem WHERE usuario_user = %s'
-        cursor.execute(comando, usuario)
-        posts = cursor.fetchall()
-        print(posts)
-
-        if posts == list:
-            print()
-        else:
-            for post in posts:
-                text = text + f'{post[1]}\n\n'
-
-        self.tela_perfil.postArea.setText(text)
+        self.addTextUser(usuario)
 
     def postar(self):
         post = self.tela_principal.texto_postar.toPlainText()
@@ -196,23 +181,12 @@ class Main(QMainWindow, Ui_Main):
 
         cursor.execute(comando, info)
 
-        cursor.execute('SELECT * FROM mensagem')
-        teste = cursor.fetchall()
-
-        text = ''
-        # print(teste)
-        if(teste == list):
-            print()
-        else:
-            for post in teste:
-                text = text + f'\n{post[4]}             {post[2]}\n{post[1]}\n'
-        
         con.commit()
         con.close()
-        
-        self.tela_principal.textBrowser.setText(text)
-        self.tela_principal.texto_postar.setText('')
 
+        self.addText()
+        self.addTextUser(usuario)
+        
 
     def postarConversa(self):
         post = self.tela_conversas.sendtext.text()
@@ -223,33 +197,11 @@ class Main(QMainWindow, Ui_Main):
     def abrirPerfil(self): # piadbsdoj
         self.QtStack.setCurrentIndex(4)
         self.tela_inicial.caixa_senha.setText('')
-        usuario = self.tela_perfil.Nome.text()
-        #u = self.cad.cadastrado(usuario)
 
-        con = self.conexao.getConexao()
-        con.reconnect()
-        cursor = con.cursor()
-
-        text = ''
-        comando = 'SELECT * FROM mensagem'
-        cursor.execute(comando)
-        posts = cursor.fetchall()
-        print(posts)
-
-        text = ''
-        # print(posts)
-        if(posts == list):
-            print()
-        else:
-            for post in posts:
-                text = text + f'\n{post[4]}             {post[2]}\n{post[1]}\n'
-        
-        con.commit()
-        con.close()
-        
-        self.tela_principal.textBrowser.setText(text)
-        self.tela_principal.texto_postar.setText('')
-
+        user = self.tela_perfil.Nome.text()
+        self.addTextUser(user)
+    
+    
     def abrirTelaConversas(self):
         self.QtStack.setCurrentIndex(5)
 
@@ -269,22 +221,7 @@ class Main(QMainWindow, Ui_Main):
     def abrirTelaPrincipal(self):
         self.QtStack.setCurrentIndex(3)
         self.tela_inicial.caixa_senha.setText('')
-        con = self.conexao.getConexao()
-        con.reconnect()
-        cursor = con.cursor()
-
-        text = ''
-        comando = 'SELECT * FROM mensagem'
-        cursor.execute(comando)
-        posts = cursor.fetchall()
-
-        if posts == list:
-            print()
-        else:
-            for post in posts:
-                text = text + f'{post[1]}\n\n'
         
-        self.tela_principal.textBrowser.setText(text)
     
     def voltarCadastro(self):
         self.QtStack.setCurrentIndex(0)
@@ -309,18 +246,52 @@ class Main(QMainWindow, Ui_Main):
         posts = cursor.fetchall()
 
         text = ''
-        # print(posts)
         if(posts == list):
             print()
         else:
+            lista = []
             for post in posts:
-                text = text + f'\n{post[4]}             {post[2]}\n{post[1]}\n'
+                texto = f'\n{post[4]}             {post[2]}\n{post[1]}\n'
+                lista.append(texto)
+            pos = len(lista) - 1
+            while pos >= 0:
+                text = text + lista[pos]
+                pos -= 1
         
         con.commit()
         con.close()
         
         self.tela_principal.textBrowser.setText(text)
         self.tela_principal.texto_postar.setText('')
+    
+    def addTextUser(self, user):
+        con = self.conexao.getConexao()
+        con.reconnect()
+        cursor = con.cursor()
+
+        text = ''
+        comando = 'SELECT * FROM mensagem WHERE usuario_user = %s'
+        cursor.execute(comando, (user, ))
+        posts = cursor.fetchall()
+        
+        text = ''
+        if(posts == list):
+            print()
+        else:
+            lista = []
+            for post in posts:
+                texto = f'\n{post[4]}             {post[2]}\n{post[1]}\n'
+                lista.append(texto)
+            pos = len(lista) - 1
+            while pos >= 0:
+                text = text + lista[pos]
+                pos -= 1
+        
+        con.commit()
+        con.close()
+        
+        self.tela_perfil.postArea.setText(text)
+    
     
 
 if __name__ == '__main__':
