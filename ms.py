@@ -5,7 +5,7 @@ def inserir():
     inserir_dados = "INSERT INTO usuario (user, email, nome, senha) VALUES (%s, %s, %s, %s)"
 
 conexao = mysql.connector.connect(
-    host='localhost',
+    host='26.30.212.204',
     database='mydb',
     user='root',
     password='root'
@@ -19,9 +19,9 @@ senha = "senha1"
 
 cursor = conexao.cursor()
 
-novo_elemento = (user, email, nome, senha)
-inserir_dados = "INSERT INTO usuario (user, email, nome, senha) VALUES (?, ?, ?, ?)", (nome, user, email, senha)
-cursor.execute('INSERT INTO usuario (user, email, nome, senha) VALUES (?, ?, ?, ?)', (user, email, nome, senha))
+cursor.execute('SELECT * FROM usuarios')
+teste = cursor.fetchall()
+print(teste)
 conexao.commit()
     
 cursor.close()

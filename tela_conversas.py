@@ -82,21 +82,21 @@ class Tela_Conversas(object):
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName("gridLayout")
-        self.frame = QtWidgets.QFrame(self.tela_perfil_meio)
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame.setObjectName("frame")
-        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.frame)
+        self.frame_m = QtWidgets.QFrame(self.tela_perfil_meio)
+        self.frame_m.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_m.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_m.setObjectName("frame_m")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.frame_m)
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.textEdit = QtWidgets.QTextEdit(self.frame)
-        self.textEdit.setStyleSheet("background-color: rgb(182, 248, 198);")
-        self.textEdit.setObjectName("textEdit")
-        self.verticalLayout_4.addWidget(self.textEdit)
-        self.gridLayout.addWidget(self.frame, 0, 0, 1, 1)
+        self.area_mensagens = QtWidgets.QTextBrowser(self.frame_m)
+        self.area_mensagens.setObjectName("area_mensagens")
+        self.verticalLayout_4.addWidget(self.area_mensagens)
+        self.gridLayout.addWidget(self.frame_m, 0, 0, 1, 1)
         self.frame_2 = QtWidgets.QFrame(self.tela_perfil_meio)
         self.frame_2.setMinimumSize(QtCore.QSize(0, 40))
+        self.frame_2.setMaximumSize(QtCore.QSize(16777215, 28))
         self.frame_2.setStyleSheet("background-color: rgb(182, 248, 198);")
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -105,15 +105,9 @@ class Tela_Conversas(object):
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.sendtext = QtWidgets.QLineEdit(self.frame_2)
-        self.sendtext.setMinimumSize(QtCore.QSize(20, 30))
-        font = QtGui.QFont()
-        font.setFamily("Century Gothic")
-        font.setPointSize(10)
-        self.sendtext.setFont(font)
-        self.sendtext.setStyleSheet("")
-        self.sendtext.setObjectName("sendtext")
-        self.horizontalLayout_3.addWidget(self.sendtext)
+        self.caixa_mensagem = QtWidgets.QTextEdit(self.frame_2)
+        self.caixa_mensagem.setObjectName("caixa_mensagem")
+        self.horizontalLayout_3.addWidget(self.caixa_mensagem)
         self.botao_enviar = QtWidgets.QPushButton(self.frame_2)
         self.botao_enviar.setMinimumSize(QtCore.QSize(0, 30))
         self.botao_enviar.setStyleSheet("QPushButton {\n"
@@ -130,7 +124,7 @@ class Tela_Conversas(object):
 "    \n"
 "}\n"
 "QPushButton:pressed {\n"
-"    background-color: rgb(12, 255, 0);\n"
+"    background-color: rgb(0, 255, 0);\n"
 "}\n"
 "")
         self.botao_enviar.setObjectName("botao_enviar")
@@ -221,7 +215,7 @@ class Tela_Conversas(object):
         self.botao_enviar.setText(_translate("MainWindow", "Enviar"))
         self.botao_conversas.setText(_translate("MainWindow", "Conversas"))
         self.botao_inicio.setText(_translate("MainWindow", "Inicio"))
-        self.botao_sair.setText(_translate("MainWindow", "Sair"))
+        self.botao_sair.setText(_translate("MainWindow", "Perfil"))
 # import icones_rc
 
 

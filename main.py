@@ -87,6 +87,7 @@ class Main(QMainWindow, Ui_Main):
         self.tela_conversas.botao_enviar.clicked.connect(self.postarConversa)
 
         self.tela_principal.botao_perfil.clicked.connect(self.navegarEntrePosts)
+        self.tela_conversas.botao_enviar.clicked.connect(self.conversa)
 
     def botaoCadastra(self):
         nome = self.tela_cadastro.caixa_nome.text()
@@ -173,7 +174,7 @@ class Main(QMainWindow, Ui_Main):
         con = self.conexao.getConexao()
         con.reconnect()
         cursor = con.cursor()
-        comando = 'INSERT INTO mensagem (mensagem, data, likes, usuario_user) VALUES ( %s, %s, %s, %s)'
+        comando = 'INSERT INTO postagem (mensagem, data, likes, usuario_user) VALUES ( %s, %s, %s, %s)'
         data = datetime.now()
         info = (post, str(data), 0, usuario)
 
@@ -239,16 +240,17 @@ class Main(QMainWindow, Ui_Main):
         cursor = con.cursor()
 
         text = ''
-        comando = 'SELECT * FROM mensagem'
+        comando = 'SELECT * FROM postagem'
         cursor.execute(comando)
         posts = cursor.fetchall()
+        # print(posts)
 
         text = ''
         if(posts == list):
             print()
         else:
             for post in posts:
-                text = f'\n{post[4]}             {post[2]}\n{post[1]}\n' + text
+                text = f'\n{post[2]}             {post[1]}\n{post[3]}\n' + text
         
         con.commit()
         con.close()
@@ -261,8 +263,7 @@ class Main(QMainWindow, Ui_Main):
         con.reconnect()
         cursor = con.cursor()
 
-        text = ''
-        comando = 'SELECT * FROM mensagem WHERE usuario_user = %s'
+        comando = 'SELECT * FROM postagem WHERE usuario_user = %s'
         cursor.execute(comando, (user, ))
         posts = cursor.fetchall()
         
@@ -277,6 +278,26 @@ class Main(QMainWindow, Ui_Main):
         con.close()
         
         self.tela_perfil.postArea.setText(text)
+    
+    def conversa(self):
+        mensagem = self.tela_conversas.caixa_mensagem.toPlainText()
+        con = self.conexao.getConexao()
+        con.reconnect()
+        cursor = con.cursor()
+
+        comando = 'INSERT INTO conversa (user1, user2, mensagens1, mensagens2) VALUES ( %s, %s, %s, %s)'
+        user1 = self.tela_perfil.Nome.text()
+        user2 = 'teste'
+        self.tela_conversas.area_mensagens.setText(mensagem)
+
+        cursor.execute(comando, (user1, user2, mensagem, 'nada'))
+
+        con.commit()
+        con.close()
+
+        # self.tela_conversas.area_mensagens.setText(mensagem)
+        
+
     
     
 
