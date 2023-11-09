@@ -1,6 +1,8 @@
 import sys
 from datetime import datetime
 
+from hashlib import sha256
+
 from conexao import Conexao
 
 from PyQt5 import QtWidgets
@@ -97,8 +99,11 @@ class Main(QMainWindow, Ui_Main):
         
         con = self.conexao.getConexao()
         con.reconnect()
+
+        hash_senha = sha256(senha.encode())
+
         
-        new = (user, email, nome, senha)
+        new = (user, email, nome, hash_senha.hexdigest())
         cursor = con.cursor()
         search_user = 'SELECT * FROM usuario WHERE user = %s'
         search_email = 'SELECT * FROM usuario WHERE email = %s'
@@ -147,8 +152,10 @@ class Main(QMainWindow, Ui_Main):
 
         cursor.execute(comando, (user, ))
         usuario = cursor.fetchone()
+        hash_senha = sha256(senha.encode())
+
         print(usuario)
-        if usuario != None and usuario[3] == senha:
+        if usuario != None and usuario[3] == hash_senha.hexdigest():
             self.QtStack.setCurrentIndex(3)
             self.tela_perfil.Nome.setText(usuario[0])
             self.tela_perfil.Email.setText(usuario[1])
@@ -272,7 +279,7 @@ class Main(QMainWindow, Ui_Main):
             print()
         else:
             for post in posts:
-                text = f'\n{post[4]}             {post[2]}\n{post[1]}\n' + text
+                text = f'\n{post[2]}             {post[1]}\n{post[3]}\n' + text
         
         con.commit()
         con.close()
