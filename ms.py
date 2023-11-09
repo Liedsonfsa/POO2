@@ -7,8 +7,8 @@ def inserir():
 conexao = mysql.connector.connect(
     host='26.30.212.204',
     database='mydb',
-    user='root',
-    password='root'
+    user='testador',
+    password='q1w2e3r4'
     
 )
 
