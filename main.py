@@ -7,7 +7,6 @@ from conexao import Conexao
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
-from collections import deque
 
 from tela_cadastro import Tela_Cadastro
 from tela_inicial import Tela_Inicial
@@ -18,6 +17,7 @@ from tela_principal import Tela_Principal
 from tela_perfil import Tela_Perfil
 from tela_conversas import Tela_Conversas
 from timeline import Timeline
+from tela_contatos import Tela_Contatos
 
 class Ui_Main(QtWidgets.QWidget):
     def setupUi(self, Main):
@@ -32,6 +32,7 @@ class Ui_Main(QtWidgets.QWidget):
         self.stack3 = QtWidgets.QMainWindow()
         self.stack4 = QtWidgets.QMainWindow()
         self.stack5 = QtWidgets.QMainWindow()
+        self.stack6 = QtWidgets.QMainWindow()
 
         self.tela_inicial = Tela_Inicial()
         self.tela_inicial.setupUi(self.stack0)
@@ -48,6 +49,9 @@ class Ui_Main(QtWidgets.QWidget):
         self.tela_conversas = Tela_Conversas()
         self.tela_conversas.setupUi(self.stack5)
 
+        self.tela_contatos = Tela_Contatos()
+        self.tela_contatos.setupUi(self.stack6)
+
         self.conexao = Conexao()
 
         self.QtStack.addWidget(self.stack0)
@@ -56,6 +60,7 @@ class Ui_Main(QtWidgets.QWidget):
         self.QtStack.addWidget(self.stack3)
         self.QtStack.addWidget(self.stack4)
         self.QtStack.addWidget(self.stack5)
+        self.QtStack.addWidget(self.stack6)
 
 
 class Main(QMainWindow, Ui_Main):
@@ -91,6 +96,8 @@ class Main(QMainWindow, Ui_Main):
         self.tela_principal.botao_perfil.clicked.connect(self.navegarEntrePosts)
         self.tela_conversas.botao_enviar.clicked.connect(self.conversa)
 
+        self.tela_contatos.botao_buscar.clicked.connect(self.contatos)
+
     def botaoCadastra(self):
         nome = self.tela_cadastro.caixa_nome.text()
         email = self.tela_cadastro.caixa_email.text()
@@ -99,9 +106,8 @@ class Main(QMainWindow, Ui_Main):
         
         con = self.conexao.getConexao()
         con.reconnect()
-
+        
         hash_senha = sha256(senha.encode())
-
         
         new = (user, email, nome, hash_senha.hexdigest())
         cursor = con.cursor()
@@ -199,6 +205,24 @@ class Main(QMainWindow, Ui_Main):
         # self.tela_conversas.sendandrec.setText(post)
         self.tela_conversas.sendtext.setText('')
 
+    def contatos(self):
+        user = self.tela_contatos.caixa_busca.toPlainText()
+
+        con = self.conexao.getConexao()
+        con.reconnect()
+
+        cursor = con.cursor()
+
+        comando = 'SELECT * FROM usuario WHERE user = %s'
+        cursor.execute(comando, (user, ))
+        usuario = cursor.fetchone()
+        print(usuario)
+        if usuario != None:
+            self.tela_contatos.area_contatos.setText(usuario[0])
+        else:
+            self.tela_contatos.area_contatos.setText('Usuário não encontrado')
+
+
 
     def abrirPerfil(self): # piadbsdoj
         self.QtStack.setCurrentIndex(4)
@@ -209,7 +233,7 @@ class Main(QMainWindow, Ui_Main):
     
     
     def abrirTelaConversas(self):
-        self.QtStack.setCurrentIndex(5)
+        self.QtStack.setCurrentIndex(6)
 
     def abrirTelaInicial(self):
         self.QtStack.setCurrentIndex(0)
