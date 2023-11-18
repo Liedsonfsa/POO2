@@ -120,6 +120,7 @@ class Main(QMainWindow, Ui_Main):
         self.tela_contatos.botao_buscar.clicked.connect(self.contatos)
 
         self.tcp_cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.connection = ('localhost', 5555)
     
 
     def botaoCadastra(self):
@@ -222,6 +223,8 @@ class Main(QMainWindow, Ui_Main):
 
         con.commit()
         con.close()
+
+        self.send_message()
 
         self.addText()
         self.addTextUser(usuario)
@@ -387,13 +390,28 @@ class Main(QMainWindow, Ui_Main):
         try:
             host = 'localhost'
             port = 5555
-            mess = self.tela_principal.texto_postar.toPlainText()
-            self.tcp_cliente.connect((host, port))
+            # mess = self.tela_principal.texto_postar.toPlainText()
+            self.tcp_cliente.connect(self.connection)
             self.tcp_cliente.send(user.encode())
             # self.show_message(mess)
         except Exception as e:
             error = "Unable to connect to server \n'{}'".format(str(e))
             print("[INFO]", error)
+    
+    def send_message(self):
+        message = self.tela_principal.texto_postar.toPlainText()
+        # self.chat_ui.textBrowser.append("Me: " + message)
+        self.tela_principal.textBrowser.append("Me: " + message)
+
+        print("sent: " + message)
+
+        try:
+            self.tcp_cliente.send(message.encode())
+        except Exception as e:
+            error = "Unable to send message '{}'".format(str(e))
+            print("[INFO]", error)
+            print("Server Error", error)
+        self.tela_principal.texto_postar.clear()
 
 
 
