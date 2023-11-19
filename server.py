@@ -1,60 +1,47 @@
 import socket
+import threading
 
-def get(host, port):
-    addr = (host, port)
+HEADER = 64
+PORT = 5555
 
-    serv_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+SERVER = 'localhost'
+print(SERVER)
+print(socket.gethostname())
+ADDR = (SERVER, PORT)
+FORMAT = 'UTF-8'
 
-    serv_socket.bind(addr)
-    serv_socket.listen(10)
-    con, cliente = serv_socket.accept()
-
-    return con, cliente
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(ADDR)
 
 
-# host = '26.212.178.226'
-# host = '127.0.0.1'
-host = '0.0.0.0'
+def handle_client(conn, addr):
+    handle = conn.recv(1024).decode(FORMAT)
+    print(f"{handle} caiu de paraquedas...")
+    connected = True
+    while connected:
 
-port = 8007
+        msg_length = conn.recv(1024).decode(FORMAT)
+        msg = msg_length
 
-addr = (host, port)
-
-serv_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-serv_socket.bind(addr)
-serv_socket.listen(10)
-print('aguardando...')
-
-con, cliente = serv_socket.accept()
-print('Conectando...')
-print('aguardando mensagem...')
-
-while True:
-    try:
-        recebe = con.recv(1024)
-        if recebe.decode() !=  '':
-            print('mensagem recebida: ' + recebe.decode())
-            if recebe.decode() != 'sair' or recebe.decode() != '':
-                if recebe.decode() == 'sair':
-                    enviar = 'sair'
-                else:
-                    enviar = input('escreva algo: ')
-                # enviar = ''
-                con.send(enviar.encode())
-            if enviar == 'sair':
-                print('cliente saiu...')
-            
-    except:     
-        addr = (host, port)
-
-        serv_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-        serv_socket.bind(addr)
-        serv_socket.listen(10)
-        print('aguardando uma nova conexão...')
-
-        con, cliente = serv_socket.accept()
-    
+        if msg == 'bye':
+            connected = False
+        else:
+            print(f"{handle}: {msg}")
         
+    
+    print(f'{handle} pulou fora...')
+    conn.close()
 
+
+def start():
+    server.listen()
+    print(f"[LISTENING] Server is listening on {SERVER}")
+    while True:
+        conn, addr = server.accept()
+        thread = threading.Thread(target=handle_client, args=(conn, addr))
+        thread.start()
+        print(f"[Online] {threading.activeCount() - 1}")
+
+
+print("[STARTING] server is starting...")
+start()
