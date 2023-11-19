@@ -32,7 +32,7 @@ class Server(object):
         while True:
             try:
                 msg = connection.recv(1024)
-
+                print('nickname: ' + nickname)
                 self.send_message(msg, nickname)
                 print(nickname + ": " + msg.decode())
             except:
@@ -50,6 +50,7 @@ class Server(object):
         if len(self.clients) > 0:
             for nickname in self.clients:
                 if nickname != sender:
+                    print('concatena')
                     msg = sender + ": " + message.decode()
                     self.clients[nickname].send(msg.encode())
 
