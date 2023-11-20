@@ -5,19 +5,22 @@ from hashlib import sha256
 
 from conexao import Conexao
 
+import threading as th 
+
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 
 from tela_cadastro import Tela_Cadastro
 from tela_inicial import Tela_Inicial
-from sistema import Sistema
-from usuario import Usuario
-from mensagens import Mensagens
+# from sistema import Sistema
+# from usuario import Usuario
+# from mensagens import Mensagens
 from tela_principal import Tela_Principal
 from tela_perfil import Tela_Perfil
 from tela_conversas import Tela_Conversas
 from timeline import Timeline
 from tela_contatos import Tela_Contatos
+import client
 
 class Ui_Main(QtWidgets.QWidget):
     def setupUi(self, Main):
@@ -69,7 +72,6 @@ class Main(QMainWindow, Ui_Main):
         self.setupUi(self)
 
 
-        self.cad = Sistema()
         self.tela_inicial.botao_ir_cadastro.clicked.connect(self.abrirTelaCadastro) # funções dos botões da tela principal
         self.timeline = Timeline()
 
@@ -91,7 +93,6 @@ class Main(QMainWindow, Ui_Main):
         self.tela_inicial.botao_sair.clicked.connect(QtWidgets.qApp.quit)
 
         self.tela_principal.botao_conversas.clicked.connect(self.abrirTelaConversas)
-        self.tela_conversas.botao_enviar.clicked.connect(self.postarConversa)
 
         self.tela_principal.botao_perfil.clicked.connect(self.navegarEntrePosts)
         self.tela_conversas.botao_enviar.clicked.connect(self.conversa)
@@ -174,6 +175,7 @@ class Main(QMainWindow, Ui_Main):
         self.tela_inicial.caixa_senha.setText('')
         con.close()
         cursor.close()
+        # self.cliente.btn_connect_clicked()
 
     def navegarEntrePosts(self):
         usuario = self.tela_perfil.Nome.text()
@@ -199,11 +201,6 @@ class Main(QMainWindow, Ui_Main):
         self.addText()
         self.addTextUser(usuario)
         
-
-    def postarConversa(self):
-        post = self.tela_conversas.sendtext.text()
-        # self.tela_conversas.sendandrec.setText(post)
-        self.tela_conversas.sendtext.setText('')
 
     def contatos(self):
         user = self.tela_contatos.caixa_busca.toPlainText()
@@ -250,6 +247,14 @@ class Main(QMainWindow, Ui_Main):
 
     def abrirTelaPrincipal(self):
         self.QtStack.setCurrentIndex(3)
+        i = 0
+        while True:
+            i += 1
+            S = th.Timer(1.0, 'teste')
+            S.start() 
+            self.addText()
+            if i == 5: break
+        S.cancel()
         self.tela_inicial.caixa_senha.setText('')
         
     
