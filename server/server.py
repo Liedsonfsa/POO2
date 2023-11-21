@@ -56,7 +56,8 @@ class Server(object):
                     self.clients[nickname].send(msg.encode())
     
     def banco(self, info):
-        
+        if info[0] == 1:
+            pass
         pass
 
 
