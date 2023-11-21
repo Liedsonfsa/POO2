@@ -122,7 +122,7 @@ class Main(QMainWindow, Ui_Main):
         self.tela_contatos.botao_buscar.clicked.connect(self.contatos)
 
         self.tcp_cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.connection = ('26.212.178.226', 5555)
+        self.connection = ('localhost', 5555)
     
 
     def botaoCadastra(self):
@@ -172,6 +172,7 @@ class Main(QMainWindow, Ui_Main):
 
         cursor.close()
         con.close()
+        
 
 
 
@@ -203,7 +204,7 @@ class Main(QMainWindow, Ui_Main):
 
         con.close()
         cursor.close()
-        self.btn_connected()
+        self.tcp_cliente.send(user.encode())
 
     def navegarEntrePosts(self):
         usuario = self.tela_perfil.Nome.text()
@@ -377,7 +378,7 @@ class Main(QMainWindow, Ui_Main):
 
         # nickname = nickname + "_" + str(random.randint(1, port))
 
-        if self.connect(nickname):
+        if self.connect():
             self.recv_thread = ReceiveThread(self.tcp_cliente)
             self.recv_thread.signal.connect(self.show_message)
             self.recv_thread.start()
@@ -387,14 +388,15 @@ class Main(QMainWindow, Ui_Main):
         print(message)
         # self.tela_principal.textBrowser.append(message)
     
-    def connect(self, user):
+    def connect(self):
         
         try:
             # host = 'localhost'
             # port = 5555
             # mess = self.tela_principal.texto_postar.toPlainText()
             self.tcp_cliente.connect(self.connection)
-            self.tcp_cliente.send(user.encode())
+            print('conectado...')
+            # self.tcp_cliente.send(user.encode())
             # self.show_message(mess)
         except Exception as e:
             error = "Unable to connect to server \n'{}'".format(str(e))
@@ -420,4 +422,5 @@ class Main(QMainWindow, Ui_Main):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     show_main = Main()
+    show_main.connect()
     sys.exit(app.exec_())
