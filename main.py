@@ -104,8 +104,8 @@ class Main(QMainWindow, Ui_Main):
         self.tela_principal.botao_perfil.clicked.connect(self.abrirPerfil)
         self.tela_cadastro.botao_sair.clicked.connect(self.voltarCadastro)
 
-        # self.tela_principal.botao_postar.clicked.connect(self.postar)
-        self.tela_principal.botao_postar.clicked.connect(self.send_btn_clicked)
+        self.tela_principal.botao_postar.clicked.connect(self.postar)
+        # self.tela_principal.botao_postar.clicked.connect(self.send_btn_clicked)
 
         self.tela_perfil.botao_inicio.clicked.connect(self.abrirTelaPrincipal)
         self.tela_perfil.botao_sair.clicked.connect(self.abrirTelaInicial)
@@ -196,6 +196,8 @@ class Main(QMainWindow, Ui_Main):
             print(usuario[0])
             self.tela_perfil.Email.setText(usuario[1])
             self.addText()
+            self.tcp_cliente.send(user.encode())
+            self.btn_connected()
         else:
             QMessageBox.information(None,'POOII', 'Login ou senha errados!')
             self.tela_inicial.caixa_senha.setText('')
@@ -205,7 +207,7 @@ class Main(QMainWindow, Ui_Main):
 
         con.close()
         cursor.close()
-        self.tcp_cliente.send(user.encode())
+        
 
     def navegarEntrePosts(self):
         usuario = self.tela_perfil.Nome.text()
@@ -229,6 +231,7 @@ class Main(QMainWindow, Ui_Main):
         con.close()
 
         self.send_message()
+        # self.tcp_cliente.send(post.encode())
 
         self.addText()
         self.addTextUser(usuario)
@@ -321,6 +324,7 @@ class Main(QMainWindow, Ui_Main):
         
         self.tela_principal.textBrowser.setText(text)
         self.tela_principal.texto_postar.setText('')
+        # self.tcp_cliente.send(post.encode())
     
     def addTextUser(self, user):
         con = self.conexao.getConexao()
@@ -386,8 +390,9 @@ class Main(QMainWindow, Ui_Main):
         print("[INFO] recv thread started")
     
     def show_message(self, message):
-        print(message)
-        self.tela_principal.textBrowser.setText(message)
+        #print(message)
+        self.addText()
+        #self.tela_principal.textBrowser.setText(message)
     
     def connect(self):
         
@@ -420,7 +425,7 @@ class Main(QMainWindow, Ui_Main):
     
     def send_btn_clicked(self):
         text = self.tela_principal.texto_postar.toPlainText()
-        text = 'teste000001 ' + text
+        
         self.tela_principal.textBrowser.setText(text)
 
         self.tcp_cliente.send(text.encode())
