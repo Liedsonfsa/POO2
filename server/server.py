@@ -1,6 +1,8 @@
 import socket
 import threading
 
+# from tela_principal import Tela_Principal
+
 class Server(object):
     def __init__(self, hostname, port):
         self.clients = {}
@@ -12,6 +14,7 @@ class Server(object):
         # start server
         self.tcp_server.bind((hostname, port))
         self.tcp_server.listen(5)
+        # self.tela_principal = Tela_Principal()
 
         print("[INFO] Server running on {}:{}".format(hostname, port))
 
@@ -33,6 +36,7 @@ class Server(object):
             try:
                 msg = connection.recv(1024)
                 self.send_message(msg, nickname)
+                # self.tela_principal.textBrowser.setText(msg)
                 print(nickname + ": " + msg.decode())
             except:
                 connection.close()
@@ -49,7 +53,6 @@ class Server(object):
         if len(self.clients) > 0:
             for nickname in self.clients:
                 if nickname != sender:
-                    print('concatena')
                     msg = sender + ": " + message.decode()
                     self.clients[nickname].send(msg.encode())
     

@@ -104,7 +104,8 @@ class Main(QMainWindow, Ui_Main):
         self.tela_principal.botao_perfil.clicked.connect(self.abrirPerfil)
         self.tela_cadastro.botao_sair.clicked.connect(self.voltarCadastro)
 
-        self.tela_principal.botao_postar.clicked.connect(self.postar)
+        # self.tela_principal.botao_postar.clicked.connect(self.postar)
+        self.tela_principal.botao_postar.clicked.connect(self.send_btn_clicked)
 
         self.tela_perfil.botao_inicio.clicked.connect(self.abrirTelaPrincipal)
         self.tela_perfil.botao_sair.clicked.connect(self.abrirTelaInicial)
@@ -378,15 +379,15 @@ class Main(QMainWindow, Ui_Main):
 
         # nickname = nickname + "_" + str(random.randint(1, port))
 
-        if self.connect():
-            self.recv_thread = ReceiveThread(self.tcp_cliente)
-            self.recv_thread.signal.connect(self.show_message)
-            self.recv_thread.start()
-            print("[INFO] recv thread started")
+        # if self.connect():
+        self.recv_thread = ReceiveThread(self.tcp_cliente)
+        self.recv_thread.signal.connect(self.show_message)
+        self.recv_thread.start()
+        print("[INFO] recv thread started")
     
     def show_message(self, message):
         print(message)
-        # self.tela_principal.textBrowser.append(message)
+        self.tela_principal.textBrowser.setText(message)
     
     def connect(self):
         
@@ -416,6 +417,15 @@ class Main(QMainWindow, Ui_Main):
             print("[INFO]", error)
             print("Server Error", error)
         self.tela_principal.texto_postar.clear()
+    
+    def send_btn_clicked(self):
+        text = self.tela_principal.texto_postar.toPlainText()
+        text = 'teste000001 ' + text
+        self.tela_principal.textBrowser.setText(text)
+
+        self.tcp_cliente.send(text.encode())
+
+    
 
 
 
