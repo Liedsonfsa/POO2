@@ -3,7 +3,7 @@ import mysql.connector
 class Conexao:
     def __init__(self):
         self.conexao = mysql.connector.connect(
-            host='127.0.0.1',
+            host='26.212.178.226',
             user='root',
             password='root',
             database='mydb'

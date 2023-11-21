@@ -14,7 +14,6 @@ class Server(object):
         # start server
         self.tcp_server.bind((hostname, port))
         self.tcp_server.listen(5)
-        # self.tela_principal = Tela_Principal()
 
         print("[INFO] Server running on {}:{}".format(hostname, port))
 
@@ -56,10 +55,13 @@ class Server(object):
                     msg = sender + ": " + message.decode()
                     self.clients[nickname].send(msg.encode())
     
+    def banco(self, info):
+        
+        pass
 
 
 if __name__ == "__main__":
     port = 5555
-    hostname = "localhost"
+    hostname = "26.212.178.226"
 
     chat_server = Server(hostname, port)

@@ -123,7 +123,7 @@ class Main(QMainWindow, Ui_Main):
         self.tela_contatos.botao_buscar.clicked.connect(self.contatos)
 
         self.tcp_cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.connection = ('localhost', 5555)
+        self.connection = ('26.212.178.226', 5555)
     
 
     def botaoCadastra(self):
@@ -368,7 +368,7 @@ class Main(QMainWindow, Ui_Main):
     def btn_connected(self):
         nickname = self.tela_perfil.Nome.text()
 
-        host = "localhost"
+        host = "26.212.178.226"
         port = 5555
         
         try:
@@ -401,7 +401,7 @@ class Main(QMainWindow, Ui_Main):
             # port = 5555
             # mess = self.tela_principal.texto_postar.toPlainText()
             self.tcp_cliente.connect(self.connection)
-            print('conectado...')
+            # print('conectado...')
             # self.tcp_cliente.send(user.encode())
             # self.show_message(mess)
         except Exception as e:
