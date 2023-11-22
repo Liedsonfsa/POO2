@@ -247,14 +247,7 @@ class Main(QMainWindow, Ui_Main):
 
     def abrirTelaPrincipal(self):
         self.QtStack.setCurrentIndex(3)
-        i = 0
-        while True:
-            i += 1
-            S = th.Timer(1.0, 'teste')
-            S.start() 
-            self.addText()
-            if i == 5: break
-        S.cancel()
+        
         self.tela_inicial.caixa_senha.setText('')
         
     

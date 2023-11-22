@@ -1,45 +1,11 @@
 import socket
-from tela_principal import Tela_Principal
 
-class Client:
-    def __init__(self, user):
-        self.user = user
-        self.tcp_user = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.rede = ('localhost', 5555)
-        
-    
-    
-    def teste(self):
-        self.tcp_user.connect(cliente.rede)
+tcp_cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+connection = ('localhost', 5555)
+# connection = ('26.212.178.226', 5555)
 
-        while True:
-            
-            pass
+tcp_cliente.connect(connection)
 
-        pass
-
-    def conversa(self):
-        self.tcp_user.connect(cliente.rede)
-        # texto = self.tela
-        pass
-    
-
-
-if __name__ == '__main__':
-    handle = input('handle: ')
-    cliente = Client(handle)
-    cliente.tcp_user.connect(cliente.rede)
-    cliente.tcp_user.send(handle.encode())
-    while True:
-            try:
-                enviar = input('mensagem: ')
-                if enviar == 'bye':
-                    cliente.tcp_user.send(enviar.encode())
-                    print("saindo...")
-                    if enviar == 'bye':
-                        cliente.tcp_user.close()
-                cliente.tcp_user.send(enviar.encode())
-            except:
-                cliente.tcp_user.close()
-                break
-    
+while True:
+    mens = input('mensagem: ')
+    tcp_cliente.send(mens.encode())
