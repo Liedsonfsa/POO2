@@ -2,6 +2,26 @@ import socket
 import threading
 
 # from tela_principal import Tela_Principal
+from PyQt5 import QtCore
+
+class ReceiveThread(QtCore.QThread):
+    signal = QtCore.pyqtSignal(str)
+
+    def __init__(self, client_socket):
+        super(ReceiveThread, self).__init__()
+        self.client_socket = client_socket
+
+    def run(self):
+        while True:
+            self.receive_message()
+
+    def receive_message(self):
+        message = self.client_socket.recv(1024)
+        message = message.decode()
+
+        print(message)
+        self.signal.emit(message)
+
 
 class Server(object):
     def __init__(self, hostname, port):
