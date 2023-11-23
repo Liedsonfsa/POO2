@@ -21,23 +21,19 @@ from tela_conversas import Tela_Conversas
 from timeline import Timeline
 from tela_contatos import Tela_Contatos
 
-class ReceiveThread(QtCore.QThread):
-    signal = QtCore.pyqtSignal(str)
+from server.mydb import Mydb
 
-    def __init__(self, client_socket):
-        super(ReceiveThread, self).__init__()
-        self.client_socket = client_socket
-
-    def run(self):
-        while True:
-            self.receive_message()
-
-    def receive_message(self):
-        message = self.client_socket.recv(1024)
-        message = message.decode()
-
-        print(message)
-        self.signal.emit(message)
+ip = '26.212.178.226'
+porta = 5555
+nome = 'liedson'
+addr = ((ip, porta))
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+try:
+    client_socket.connect(addr)
+    client_socket.send(nome.encode())
+except Exception as e:
+    print(f'Ocorreu uma exceção: {e}')
+    exit()
 
 
 class Ui_Main(QtWidgets.QWidget):
@@ -74,8 +70,6 @@ class Ui_Main(QtWidgets.QWidget):
         self.tela_contatos.setupUi(self.stack6)
 
         self.conexao = Conexao()
-
-        # self.recive = ReceiveThread()
 
         self.QtStack.addWidget(self.stack0)
         self.QtStack.addWidget(self.stack1)
@@ -121,9 +115,10 @@ class Main(QMainWindow, Ui_Main):
         self.tela_conversas.botao_enviar.clicked.connect(self.conversa)
 
         self.tela_contatos.botao_buscar.clicked.connect(self.contatos)
+        self.mydb = Mydb()
+        
 
-        self.tcp_cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.connection = ('26.212.178.226', 5555)
+        
     
 
     def botaoCadastra(self):
@@ -132,28 +127,24 @@ class Main(QMainWindow, Ui_Main):
         senha = self.tela_cadastro.caixa_senha.text()
         user = self.tela_cadastro.caixa_usuario.text()
         
-        con = self.conexao.getConexao()
-        con.reconnect()
-        
         hash_senha = sha256(senha.encode())
-        
-        new = (user, email, nome, hash_senha.hexdigest())
-        cursor = con.cursor()
-        search_user = 'SELECT * FROM usuario WHERE user = %s'
-        search_email = 'SELECT * FROM usuario WHERE email = %s'
-        new_user = "INSERT INTO usuario (user, email, nome, senha) VALUES (%s, %s, %s, %s)"
+        lista = ['1', user, email, nome, hash_senha]
+        dados = ','.join(lista)
+        client_socket.send(dados.encode())
 
         if not(nome == '' or email == '' or senha == '' or user == ''):
-            cursor.execute(search_email, (email, ))
-            e = cursor.fetchone()
-            cursor.execute(search_user, (user, ))
-            u = cursor.fetchone()
-            if u != None or e != None:
-                if u != None and e != None:
+            try:
+                resposta = client_socket.recv(4096).decode()
+            except:
+                print("\nNão foi possível permanecer conectado!\n")
+                client_socket.close()
+
+            if resposta.decode() != '0':
+                if resposta.decode() == '3':
                     QMessageBox.information(None,'Error', 'Email e Usuário já cadastrados!')
                     self.tela_cadastro.caixa_email.setText('')
                     self.tela_cadastro.caixa_usuario.setText('')
-                elif e != None:
+                elif resposta.decode() == '1':
                     QMessageBox.information(None,'Email', 'Email já cadastrado!')
                     self.tela_cadastro.caixa_email.setText('')
                 else:
@@ -165,39 +156,25 @@ class Main(QMainWindow, Ui_Main):
                 self.tela_cadastro.caixa_nome.setText('')
                 self.tela_cadastro.caixa_senha.setText('')
                 self.tela_cadastro.caixa_usuario.setText('')
-                cursor.execute(new_user, new)
-                con.commit()
                 self.QtStack.setCurrentIndex(0)
         else:
             QMessageBox.information(None,'POOII', 'Todos os valores devem ser preenchidos!')
-
-        cursor.close()
-        con.close()
-        
-
-
-
+    
+    
     def logar(self):
         user = self.tela_inicial.caixa_usuario.text()
         senha = self.tela_inicial.caixa_senha.text()
-        con = self.conexao.getConexao()
-        con.reconnect()
-        cursor = con.cursor()
-        comando = "SELECT * FROM usuario WHERE user = %s"
-
-        cursor.execute(comando, (user, ))
-        usuario = cursor.fetchone()
         hash_senha = sha256(senha.encode())
+        lista = ['2', user, hash_senha]
+        dados = ','.join(lista)
+        client_socket.send(dados.encode())
 
-        print(usuario)
-        if usuario != None and usuario[3] == hash_senha.hexdigest():
+        resposta = client_socket.recv(4096).decode()
+        if resposta.decode() == '0':
             self.QtStack.setCurrentIndex(3)
-            self.tela_perfil.Nome.setText(usuario[0])
-            print(usuario[0])
-            self.tela_perfil.Email.setText(usuario[1])
+            self.tela_perfil.Nome.setText(nome)
+            self.tela_perfil.Email.setText('teste')
             self.addText()
-            self.tcp_cliente.send(user.encode())
-            self.btn_connected()
         else:
             QMessageBox.information(None,'POOII', 'Login ou senha errados!')
             self.tela_inicial.caixa_senha.setText('')
@@ -205,36 +182,28 @@ class Main(QMainWindow, Ui_Main):
 
         self.tela_inicial.caixa_senha.setText('')
 
-        con.close()
-        cursor.close()
-        
 
-    def navegarEntrePosts(self):
-        usuario = self.tela_perfil.Nome.text()
+    # def postar(self):
+    #     post = self.tela_principal.texto_postar.toPlainText()
 
-        self.addTextUser(usuario)
+    #     usuario = self.tela_perfil.Nome.text()
+    #     con = self.conexao.getConexao()
+    #     con.reconnect()
+    #     cursor = con.cursor()
+    #     comando = 'INSERT INTO postagem (mensagem, data, likes, usuario_user) VALUES ( %s, %s, %s, %s)'
+    #     data = datetime.now()
+    #     info = (post, str(data), 0, usuario)
 
-    def postar(self):
-        post = self.tela_principal.texto_postar.toPlainText()
+    #     cursor.execute(comando, info)
 
-        usuario = self.tela_perfil.Nome.text()
-        con = self.conexao.getConexao()
-        con.reconnect()
-        cursor = con.cursor()
-        comando = 'INSERT INTO postagem (mensagem, data, likes, usuario_user) VALUES ( %s, %s, %s, %s)'
-        data = datetime.now()
-        info = (post, str(data), 0, usuario)
+    #     con.commit()
+    #     con.close()
 
-        cursor.execute(comando, info)
+    #     self.send_message()
+    #     # self.tcp_cliente.send(post.encode())
 
-        con.commit()
-        con.close()
-
-        self.send_message()
-        # self.tcp_cliente.send(post.encode())
-
-        self.addText()
-        self.addTextUser(usuario)
+    #     self.addText()
+    #     self.addTextUser(usuario)
         
 
     def postarConversa(self):
@@ -365,74 +334,7 @@ class Main(QMainWindow, Ui_Main):
 
         # self.tela_conversas.area_mensagens.setText(mensagem)
     
-    def btn_connected(self):
-        nickname = self.tela_perfil.Nome.text()
-
-        host = "26.212.178.226"
-        port = 5555
-        
-        try:
-            port = int(port)
-        except Exception as e:
-            error = "Invalid port number \n'{}'".format(str(e))
-            print("[INFO]", error)
-            # self.show_error("Port Number Error", error)
-        
-        if len(nickname) < 1:
-            nickname = socket.gethostname()
-
-        # nickname = nickname + "_" + str(random.randint(1, port))
-
-        # if self.connect():
-        self.recv_thread = ReceiveThread(self.tcp_cliente)
-        self.recv_thread.signal.connect(self.show_message)
-        self.recv_thread.start()
-        print("[INFO] recv thread started")
     
-    def show_message(self, message):
-        #print(message)
-        self.addText()
-        #self.tela_principal.textBrowser.setText(message)
-    
-    def connect(self):
-        
-        try:
-            # host = 'localhost'
-            # port = 5555
-            # mess = self.tela_principal.texto_postar.toPlainText()
-            self.tcp_cliente.connect(self.connection)
-            # print('conectado...')
-            # self.tcp_cliente.send(user.encode())
-            # self.show_message(mess)
-        except Exception as e:
-            error = "Unable to connect to server \n'{}'".format(str(e))
-            print("[INFO]", error)
-    
-    def send_message(self):
-        message = self.tela_principal.texto_postar.toPlainText()
-        # self.chat_ui.textBrowser.append("Me: " + message)
-        # self.tela_principal.textBrowser.append("Me: " + message)
-
-        print("sent: " + message)
-
-        try:
-            self.tcp_cliente.send(message.encode())
-        except Exception as e:
-            error = "Unable to send message '{}'".format(str(e))
-            print("[INFO]", error)
-            print("Server Error", error)
-        self.tela_principal.texto_postar.clear()
-    
-    def send_btn_clicked(self):
-        text = self.tela_principal.texto_postar.toPlainText()
-        
-        self.tela_principal.textBrowser.setText(text)
-
-        self.tcp_cliente.send(text.encode())
-
-    
-
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
