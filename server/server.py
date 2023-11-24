@@ -3,7 +3,7 @@ import threading
 import mydb
 
 
-host = ''
+host = 'localhost'
 porta = 5555
 addr = (host, porta)
 
@@ -22,19 +22,27 @@ def menu(con, cliente):
         elif envio[0] == '1':
             print(f"Mensagem 1 Servidor: {envio}")
             lista = envio.split(',')
+            print(f'lista: {lista}')
             resposta = db.cadastrar(lista[1], lista[2], lista[3], lista[4])
-            
+            print(resposta)
             con.send(str(resposta).encode())
         elif envio[0] == '2':
             print(f"Mensagem 1 Servidor: {envio}")
             lista = envio.split(',')
-
-            resposta = db.efetuarLogin(envio[1, envio[2]])
+            print(f'lista: {lista}')
+            resposta = db.efetuarLogin(envio[1], envio[2])
             con.send(str(resposta).encode())
-        elif envio[0] == 4:
+        elif envio[0] == '4':
             lista = envio.split(',')
             resposta = db.realizarPostagem(lista[1], lista[2])
             con.send(str(resposta).encode())
+        elif envio[0] == '5':
+            text = db.addText()
+            con.send(text.encode())
+        elif envio[0] == '6':
+            text = db.addTextUser(envio[1])
+            con.send(text.encode())
+        
 
 
 def main():
@@ -54,4 +62,4 @@ if __name__ == "__main__":
     try:
         main()
     finally:
-        dados_botoes.drop_tabela_botoes()
+        print('não deu...')

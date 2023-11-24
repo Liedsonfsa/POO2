@@ -9,17 +9,21 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 class Mydb:
     def __init__(self):
         self.conexao = mysql.connector.connect(
-            host='26.212.178.226',
+            host='127.0.0.1',
             user='root',
-            password="",
+            password='root',
             database='mydb'
         )
+        
+    
+    def getConexao(self):
+        return self.conexao
     
     def cadastrar(self, user, email, nome, senha):
-        con = self.conexao
+        con = self.getConexao()
         con.reconnect()
         
-        new = (user, email, nome, senha.hexdigest())
+        new = (user, email, nome, senha)
         cursor = con.cursor()
         search_user = 'SELECT * FROM usuario WHERE user = %s'
         search_email = 'SELECT * FROM usuario WHERE email = %s'
@@ -30,22 +34,24 @@ class Mydb:
         e = cursor.fetchone()
         cursor.execute(search_user, (user, ))
         u = cursor.fetchone()
+        print(f'u: {u}, e: {e}')
+        resposta = 0
         if u != None or e != None:
             if u != None and e != None:
-                return 3
+                resposta = 3
             elif e != None:
-                return 1
+                resposta = 1
             else:
-                return 2
+                resposta = 2
         else:
             cursor.execute(new_user, new)
             con.commit()
         cursor.close()
         con.close()
-        return 0
+        return str(resposta)
     
     def checkUser(self, user):
-        con = self.conexao
+        con = self.getConexao()
         con.reconnect()
 
         cursor = con.cursor()
@@ -57,9 +63,9 @@ class Mydb:
         if usuario == None:
             resposta = 0
         
-        return resposta
+        return str(resposta)
     def checkEmail(self, email):
-        con = self.conexao
+        con = self.getConexao()
         con.reconnect()
 
         cursor = con.cursor()
@@ -71,28 +77,30 @@ class Mydb:
         if usuario == None:
             resposta = 0
         
-        return resposta
+        return str(resposta)
 
     def efetuarLogin(self, user, hash_senha):
-        con = self.conexao
+        con = self.getConexao()
         con.reconnect()
         cursor = con.cursor()
         comando = "SELECT * FROM usuario WHERE user = %s"
 
         cursor.execute(comando, (user, ))
         usuario = cursor.fetchone()
+        print(usuario)
         resposta = int()
-        if usuario != None and usuario[3] == hash_senha.hexdigest():
+        if usuario != None and usuario[3] == hash_senha:
             resposta = 0
         else:
             resposta = 2
         
-        con.send(str(resposta).encode())
+       
         con.close()
         cursor.close()
+        return str(resposta)
 
     def realizarPostagem(self, post, usuario):
-        con = self.conexao
+        con = self.getConexao()
         con.reconnect()
         cursor = con.cursor()
         comando = 'INSERT INTO postagem (mensagem, data, likes, usuario_user) VALUES ( %s, %s, %s, %s)'
@@ -103,9 +111,10 @@ class Mydb:
 
         con.commit()
         con.close()
+        
     
     def addTextUser(self, user):
-        con = self.conexao
+        con = self.getConexao()
         con.reconnect()
         cursor = con.cursor()
 
@@ -126,7 +135,7 @@ class Mydb:
         return text
 
     def addText(self):
-        con = self.conexao
+        con = self.getConexao()
         con.reconnect()
         cursor = con.cursor()
 
