@@ -30,7 +30,7 @@ def menu(con, cliente):
             print(f"Mensagem 1 Servidor: {envio}")
             lista = envio.split(',')
             print(f'lista: {lista}')
-            resposta = db.efetuarLogin(envio[1], envio[2])
+            resposta = db.efetuarLogin(lista[1], lista[2])
             con.send(str(resposta).encode())
         elif envio[0] == '4':
             lista = envio.split(',')

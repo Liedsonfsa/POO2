@@ -84,7 +84,7 @@ class Mydb:
         con.reconnect()
         cursor = con.cursor()
         comando = "SELECT * FROM usuario WHERE user = %s"
-
+        print(f'user: {user}, hash: {hash_senha}')
         cursor.execute(comando, (user, ))
         usuario = cursor.fetchone()
         print(usuario)

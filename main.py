@@ -172,12 +172,14 @@ class Main(QMainWindow, Ui_Main):
         senha = self.tela_inicial.caixa_senha.text()
         hash_senha = sha256(senha.encode())
         lista = list()
-        lista.append('2')   
-        lista.append(user)   
-        lista.append(hash_senha.hexdigest())   
+        print(f'user: {user}, senha: {hash_senha}')
+        lista.append('2')
+        lista.append(user)
+        lista.append(hash_senha.hexdigest())
+        print(f'1: {lista[1]}, 2: {lista[2]}')  
         dados = ','.join(lista)
         client_socket.send(dados.encode())
-
+        print(f'dados: {dados}')
         try:
             resposta = client_socket.recv(4096).decode()
         except:
@@ -186,7 +188,7 @@ class Main(QMainWindow, Ui_Main):
         
         if resposta == '0':
             self.QtStack.setCurrentIndex(3)
-            self.tela_perfil.Nome.setText(nome)
+            self.tela_perfil.Nome.setText(user)
             self.tela_perfil.Email.setText('teste')
             # self.addText()
             client_socket.send('5'.encode())
