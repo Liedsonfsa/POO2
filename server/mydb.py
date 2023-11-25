@@ -5,7 +5,6 @@ from datetime import datetime
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 
-
 class Mydb:
     def __init__(self):
         self.conexao = mysql.connector.connect(
@@ -14,7 +13,7 @@ class Mydb:
             password='root',
             database='mydb'
         )
-        
+
     
     def getConexao(self):
         return self.conexao
@@ -153,6 +152,8 @@ class Mydb:
         
         con.commit()
         con.close()
+        
+        tela.textBrowser.setText(text)
         
         return text
 
