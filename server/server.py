@@ -27,7 +27,7 @@ def menu(con, cliente):
             print(resposta)
             con.send(str(resposta).encode())
         elif envio[0] == '2':
-            print(f"Mensagem 1 Servidor: {envio}")
+            print(f"Mensagem 2 Servidor: {envio}")
             lista = envio.split(',')
             print(f'lista: {lista}')
             resposta = db.efetuarLogin(lista[1], lista[2])
@@ -38,10 +38,10 @@ def menu(con, cliente):
             con.send(str(resposta).encode())
         elif envio[0] == '5':
             text = db.addText()
-            con.send(text.encode())
+            # con.send(text.encode())
         elif envio[0] == '6':
             text = db.addTextUser(envio[1])
-            con.send(text.encode())
+            # con.send(text.encode())
         
 
 

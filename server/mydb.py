@@ -63,6 +63,7 @@ class Mydb:
             resposta = 0
         
         return str(resposta)
+    
     def checkEmail(self, email):
         con = self.getConexao()
         con.reconnect()
@@ -87,13 +88,10 @@ class Mydb:
         cursor.execute(comando, (user, ))
         usuario = cursor.fetchone()
         print(usuario)
-        resposta = int()
+        resposta = 2
         if usuario != None and usuario[3] == hash_senha:
             resposta = 0
-        else:
-            resposta = 2
         
-       
         con.close()
         cursor.close()
         return str(resposta)
@@ -153,7 +151,7 @@ class Mydb:
         con.commit()
         con.close()
         
-        tela.textBrowser.setText(text)
+        # tela.textBrowser.setText(text)
         
         return text
 
