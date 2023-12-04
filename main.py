@@ -5,15 +5,11 @@ import random
 
 from hashlib import sha256
 
-from conexao import Conexao
-
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 
 from tela_cadastro import Tela_Cadastro
 from tela_inicial import Tela_Inicial
-from usuario import Usuario
-from mensagens import Mensagens
 from tela_principal import Tela_Principal
 from tela_perfil import Tela_Perfil
 from tela_conversas import Tela_Conversas
@@ -223,31 +219,8 @@ class Main(QMainWindow, Ui_Main):
 
         client_socket.send(dados.encode())
     
+
     
-    def postarConversa(self):
-        post = self.tela_conversas.sendtext.text()
-        
-        self.tela_conversas.sendtext.setText('')
-
-    def contatos(self):
-        user = self.tela_contatos.caixa_busca.toPlainText()
-
-        con = self.conexao.getConexao()
-        con.reconnect()
-
-        cursor = con.cursor()
-
-        comando = 'SELECT * FROM usuario WHERE user = %s'
-        cursor.execute(comando, (user, ))
-        usuario = cursor.fetchone()
-        print(usuario)
-        if usuario != None:
-            self.tela_contatos.area_contatos.setText(usuario[0])
-        else:
-            self.tela_contatos.area_contatos.setText('Usuário não encontrado')
-
-
-
     def abrirPerfil(self): # piadbsdoj
         self.QtStack.setCurrentIndex(4)
         self.tela_inicial.caixa_senha.setText('')
@@ -295,46 +268,8 @@ class Main(QMainWindow, Ui_Main):
         self.tela_principal.textBrowser.setText(text)
         self.tela_principal.texto_postar.setText('')
         # self.tcp_cliente.send(post.encode())
-    
-    def addTextUser(self, user):
-        con = self.conexao.getConexao()
-        con.reconnect()
-        cursor = con.cursor()
 
-        comando = 'SELECT * FROM postagem WHERE usuario_user = %s'
-        cursor.execute(comando, (user, ))
-        posts = cursor.fetchall()
-        
-        text = ''
-        if(posts == list):
-            print()
-        else:
-            for post in posts:
-                text = f'\n{post[2]}             {post[1]}\n{post[3]}\n' + text
-        
-        con.commit()
-        con.close()
-        
-        self.tela_perfil.postArea.setText(text)
-    
-    def conversa(self):
-        mensagem = self.tela_conversas.caixa_mensagem.toPlainText()
-        con = self.conexao.getConexao()
-        con.reconnect()
-        cursor = con.cursor()
 
-        comando = 'INSERT INTO conversa (user1, user2, mensagens1, mensagens2) VALUES (%s, %s, %s, %s)'
-        user1 = self.tela_perfil.Nome.text()
-        user2 = 'teste'
-        self.tela_conversas.area_mensagens.setText(mensagem)
-
-        cursor.execute(comando, (user1, user2, mensagem, 'nada'))
-
-        con.commit()
-        con.close()
-
-        # self.tela_conversas.area_mensagens.setText(mensagem)
-    
     
 
 if __name__ == '__main__':
