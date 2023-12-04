@@ -12,13 +12,11 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 
 from tela_cadastro import Tela_Cadastro
 from tela_inicial import Tela_Inicial
-from sistema import Sistema
 from usuario import Usuario
 from mensagens import Mensagens
 from tela_principal import Tela_Principal
 from tela_perfil import Tela_Perfil
 from tela_conversas import Tela_Conversas
-from timeline import Timeline
 from tela_contatos import Tela_Contatos
 
 from server.mydb import Mydb
@@ -86,9 +84,7 @@ class Main(QMainWindow, Ui_Main):
         self.setupUi(self)
 
 
-        self.cad = Sistema()
         self.tela_inicial.botao_ir_cadastro.clicked.connect(self.abrirTelaCadastro) # funções dos botões da tela principal
-        self.timeline = Timeline()
 
         self.tela_inicial.botao_logar.clicked.connect(self.logar)
 
@@ -97,9 +93,6 @@ class Main(QMainWindow, Ui_Main):
 
         self.tela_principal.botao_perfil.clicked.connect(self.abrirPerfil)
         self.tela_cadastro.botao_sair.clicked.connect(self.voltarCadastro)
-
-        # self.tela_principal.botao_postar.clicked.connect(self.postar)
-        # self.tela_principal.botao_postar.clicked.connect(self.send_btn_clicked)
 
         self.tela_perfil.botao_inicio.clicked.connect(self.abrirTelaPrincipal)
         self.tela_perfil.botao_sair.clicked.connect(self.abrirTelaInicial)
@@ -111,16 +104,11 @@ class Main(QMainWindow, Ui_Main):
         self.tela_principal.botao_conversas.clicked.connect(self.abrirTelaConversas)
         self.tela_conversas.botao_enviar.clicked.connect(self.postarConversa)
 
-        # self.tela_principal.botao_perfil.clicked.connect(self.navegarEntrePosts)
         self.tela_conversas.botao_enviar.clicked.connect(self.conversa)
 
-        # self.tela_contatos.botao_buscar.clicked.connect(self.contatos)
         self.mydb = Mydb()
         
-
-        
     
-
     def botaoCadastra(self):
         nome = self.tela_cadastro.caixa_nome.text()
         email = self.tela_cadastro.caixa_email.text()
@@ -221,8 +209,21 @@ class Main(QMainWindow, Ui_Main):
 
     #     self.addText()
     #     self.addTextUser(usuario)
-        
 
+    def postar(self):
+        post = self.tela_principal.texto_postar.toPlainText()
+        usuario = self.tela_perfil.Nome.text()
+
+        client_socket.send(post.encode())
+        lista = list()
+        lista.append('4')
+        lista.append(usuario)
+        lista.append(post)
+        dados = ','.join(lista)
+
+        client_socket.send(dados.encode())
+    
+    
     def postarConversa(self):
         post = self.tela_conversas.sendtext.text()
         

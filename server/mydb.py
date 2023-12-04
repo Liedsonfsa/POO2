@@ -16,9 +16,25 @@ class Mydb:
 
     
     def getConexao(self):
+        """
+        
+        """
         return self.conexao
     
-    def cadastrar(self, user, email, nome, senha):
+    def cadastrar(self, user: str, email: str, nome: str, senha: str):
+        """
+        Este módulo recebe as informações necessárias para o cadastro, e faz uma pesquisa no banco de dados pelo user e o email
+        informados, caso já sejam cadastrados o novo usuário não sera inserido.
+                Parameters: 
+                        user (str): user do usuário
+                        email (str): email do usuário
+                        nome (str): nome do usuário
+                        senha (str): hash da senha do usuário
+                Return:
+                        retorna 0 se as informações ainda não estão registradas, 1 se o email jpa está cadastrato,
+                        2 se o user já está cadastrado e 3 se as duas informações já estão cadastradas na base de dados.
+
+        """
         con = self.getConexao()
         con.reconnect()
         
@@ -49,7 +65,14 @@ class Mydb:
         con.close()
         return str(resposta)
     
-    def checkUser(self, user):
+    def checkUser(self, user: str):
+        """
+        Este módulo faz uma pesquisa pelo user do usuário no banco de dados
+                Parameters: 
+                        user (str): nome do usuário
+                Return: 
+                        retorna zero se o user não existir, e 1 se ele já estiver cadastrado
+        """
         con = self.getConexao()
         con.reconnect()
 
@@ -64,7 +87,14 @@ class Mydb:
         
         return str(resposta)
     
-    def checkEmail(self, email):
+    def checkEmail(self, email: str):
+        """
+        Este módulo faz uma pesquisa pelo email do usuário no banco de dados
+                Parameters: 
+                        email (str): email do usuário
+                Return: 
+                        retorna zero se o email não existir, e 1 se ele já estiver cadastrado
+        """
         con = self.getConexao()
         con.reconnect()
 
@@ -79,7 +109,17 @@ class Mydb:
         
         return str(resposta)
 
-    def efetuarLogin(self, user, hash_senha):
+    def efetuarLogin(self, user: str, hash_senha: str):
+        """
+        Este módulo recebe o user e o hash da senha do usuário, e efetua uma busca pelo usuário no banco de dsdos,
+        caso o user e o hash sejam os mesmos dos encontrados no banco de dados, o acesso é permitido.
+                Parameters:
+                        user (str): nome do usuário
+                        hash_senha (str): hash da senha do usuário
+                Return:
+                        retorna 2 se o login ou senha estiverem errados, e 0 se estiverem corretos.
+
+        """
         con = self.getConexao()
         con.reconnect()
         cursor = con.cursor()
@@ -96,7 +136,15 @@ class Mydb:
         cursor.close()
         return str(resposta)
 
-    def realizarPostagem(self, post, usuario):
+    def realizarPostagem(self, post: str, usuario: str) -> None:
+        """
+        Este módulo recebe o conteúdo da postagem e o nome do usuário e os insere no banco de dados
+                Parameters:
+                        post (str): conteúdo da postagem
+                        usuario (str): nome fo usuário
+                Return:
+                        None
+        """
         con = self.getConexao()
         con.reconnect()
         cursor = con.cursor()
@@ -105,12 +153,20 @@ class Mydb:
         info = (post, str(data), 0, usuario)
 
         cursor.execute(comando, info)
-
+        
         con.commit()
         con.close()
         
     
-    def addTextUser(self, user):
+    def addTextUser(self, user: str) -> str:
+        """
+        Este módulo recebe o nome do usuário e seleciona todas as mensagens desse usuário no banco de dados,
+        e as adiciona na tela de perfil do usuário.
+                Parameters:
+                        user (str): nome do usuário
+                Return:
+                        text (str): todas as mensagens do usuário
+        """
         con = self.getConexao()
         con.reconnect()
         cursor = con.cursor()
