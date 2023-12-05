@@ -2,8 +2,6 @@ import mysql.connector
 
 from datetime import datetime
 
-from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 
 class Mydb:
     """
@@ -208,7 +206,7 @@ class Mydb:
                 Parameters:
                         None
                 Returns:
-                        No return 
+                        None
         """
         con = self.getConexao()
         con.reconnect()

@@ -6,7 +6,7 @@ import mydb
 """
 Servidor onde o cliente deverá se conectar.
 """
-host = 'localhost'
+host = '26.212.178.226'
 porta = 5555
 addr = (host, porta)
 
@@ -17,7 +17,7 @@ def menu(con, cliente):
     conectado = True
 
     while conectado:
-        envio = con.recv(4096).decode()
+        envio = con.recv(1048576).decode()
         
         if envio[0] == '0':
             print(f"Mensagem 0 Servidor: {envio}")

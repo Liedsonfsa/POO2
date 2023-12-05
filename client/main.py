@@ -16,7 +16,7 @@ from tela_conversas import Tela_Conversas
 from tela_contatos import Tela_Contatos
 
 
-ip = 'localhost'
+ip = '26.212.178.226'
 porta = 5555
 nome = 'liedson'
 addr = ((ip, porta))
@@ -95,6 +95,7 @@ class Main(QMainWindow, Ui_Main):
         self.tela_inicial.botao_sair.clicked.connect(QtWidgets.qApp.quit)
 
         self.tela_principal.botao_conversas.clicked.connect(self.abrirTelaConversas)
+        self.tela_principal.botao_postar.clicked.connect(self.postar)
         
         
     
@@ -121,7 +122,7 @@ class Main(QMainWindow, Ui_Main):
         if not(nome == '' or email == '' or senha == '' or user == ''):
             client_socket.send(dados.encode())
             try:
-                resposta = client_socket.recv(4096).decode()
+                resposta = client_socket.recv(1048576).decode()
             except:
                 print("\nNão foi possível permanecer conectado!\n")
                 client_socket.close()
@@ -166,7 +167,7 @@ class Main(QMainWindow, Ui_Main):
         client_socket.send(dados.encode())
         print(f'dados: {dados}')
         try:
-            resposta = client_socket.recv(4096).decode()
+            resposta = client_socket.recv(1048576).decode()
         except:
             print("\nNão foi possível permanecer conectado!\n")
             client_socket.close()
@@ -210,6 +211,7 @@ class Main(QMainWindow, Ui_Main):
         """
         Este módulo captura o conteúdo da postagem e o nome do usuário, e as envia para o servidor.
         """
+        print('postar clicked')
         post = self.tela_principal.texto_postar.toPlainText()
         usuario = self.tela_perfil.Nome.text()
 
