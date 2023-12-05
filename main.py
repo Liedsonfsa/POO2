@@ -63,8 +63,6 @@ class Ui_Main(QtWidgets.QWidget):
         self.tela_contatos = Tela_Contatos()
         self.tela_contatos.setupUi(self.stack6)
 
-        # self.conexao = Conexao()
-
         self.QtStack.addWidget(self.stack0)
         self.QtStack.addWidget(self.stack1)
         self.QtStack.addWidget(self.stack2)
@@ -98,14 +96,15 @@ class Main(QMainWindow, Ui_Main):
         self.tela_inicial.botao_sair.clicked.connect(QtWidgets.qApp.quit)
 
         self.tela_principal.botao_conversas.clicked.connect(self.abrirTelaConversas)
-        self.tela_conversas.botao_enviar.clicked.connect(self.postarConversa)
-
-        self.tela_conversas.botao_enviar.clicked.connect(self.conversa)
-
+        
         self.mydb = Mydb()
         
     
     def botaoCadastra(self):
+        """
+        Este módulo captura as informações preenchidas pelo usuário e se todos os campos estiverem preenchidos, as envia para o servidor.
+        Caso as informações sejam válidas, o usuário é cadastrado.
+        """
         nome = self.tela_cadastro.caixa_nome.text()
         email = self.tela_cadastro.caixa_email.text()
         senha = self.tela_cadastro.caixa_senha.text()
@@ -152,6 +151,10 @@ class Main(QMainWindow, Ui_Main):
     
     
     def logar(self):
+        """
+        Este módulo captura as informações fornecidas pelo usuário e caso sejam válidas, as envia para o servidor.
+        Caso as informações estejam corretas, a conexão é permitida.
+        """
         user = self.tela_inicial.caixa_usuario.text()
         senha = self.tela_inicial.caixa_senha.text()
         hash_senha = sha256(senha.encode())
@@ -174,7 +177,6 @@ class Main(QMainWindow, Ui_Main):
             self.QtStack.setCurrentIndex(3)
             self.tela_perfil.Nome.setText(user)
             self.tela_perfil.Email.setText('teste')
-            # self.addText()
             client_socket.send('5'.encode())
         else:
             QMessageBox.information(None,'POOII', 'Login ou senha errados!')
@@ -207,6 +209,9 @@ class Main(QMainWindow, Ui_Main):
     #     self.addTextUser(usuario)
 
     def postar(self):
+        """
+        Este módulo captura o conteúdo da postagem e o nome do usuário, e as envia para o servidor.
+        """
         post = self.tela_principal.texto_postar.toPlainText()
         usuario = self.tela_perfil.Nome.text()
 
@@ -221,36 +226,60 @@ class Main(QMainWindow, Ui_Main):
     
 
     
-    def abrirPerfil(self): # piadbsdoj
+    def abrirPerfil(self):
+        """
+        ESte módulo abre a tela de perfil do usuário.
+        """
         self.QtStack.setCurrentIndex(4)
         self.tela_inicial.caixa_senha.setText('')
 
         user = self.tela_perfil.Nome.text()
-        self.addTextUser(user)
+        # self.addTextUser(user)
     
     
     def abrirTelaConversas(self):
+        """
+        ESte módulo abre a tela de perfil do usuário.
+        """
         self.QtStack.setCurrentIndex(6)
 
     def abrirTelaInicial(self):
+        """
+        Este módulo abre a tela inicial.
+        """
         self.QtStack.setCurrentIndex(0)
 
     def abrirTelaCadastro(self):
+        """
+        Este módulo abre a tela de cadastro.
+        """
         self.QtStack.setCurrentIndex(1)
 
 
     def abrirTelaLogin(self):
+        """
+        Este módulo abre a tela de login.
+        """
         self.QtStack.setCurrentIndex(2)
 
     def sairSistema(self):
+        """
+        Este módulo abre a tela inicial.
+        """
         self.QtStack.setCurrentIndex(0)
 
     def abrirTelaPrincipal(self):
+        """
+        Este módulo abre a tela principal.
+        """
         self.QtStack.setCurrentIndex(3)
         self.tela_inicial.caixa_senha.setText('')
         
     
     def voltarCadastro(self):
+        """
+        Este módulo volta para a tela incial e reseta as informações dos line edits.
+        """
         self.QtStack.setCurrentIndex(0)
         self.tela_cadastro.caixa_usuario.setText('')
         self.tela_cadastro.caixa_nome.setText('')
@@ -258,11 +287,17 @@ class Main(QMainWindow, Ui_Main):
         self.tela_cadastro.caixa_email.setText('')
 
     def voltarLogin(self):
+        """
+        Este módulo volta para a tela incial e reseta as informações dos line edits.
+        """
         self.QtStack.setCurrentIndex(0)
         self.tela_inicial.caixa_senha.setText('')
         self.tela_inicial.caixa_usuario.setText('')
 
     def addText(self):
+        """
+        Este módulo envia um código para o servidor para que ele devolva todas as mensagens referentes a timeline que estão no banco de dados.
+        """
         client_socket.send('5'.encode())
         text = client_socket.recv(4096).decode()
         self.tela_principal.textBrowser.setText(text)
@@ -275,5 +310,4 @@ class Main(QMainWindow, Ui_Main):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     show_main = Main()
-    # show_main.connect()
     sys.exit(app.exec_())

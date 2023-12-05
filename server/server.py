@@ -3,6 +3,9 @@ import threading
 import mydb
 
 
+"""
+Servidor onde o cliente deverá se conectar.
+"""
 host = 'localhost'
 porta = 5555
 addr = (host, porta)

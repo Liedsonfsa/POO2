@@ -6,6 +6,18 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 
 class Mydb:
+    """
+    A classe representa o banco de dados onde vão ser ralizadas as consultas.
+
+    Attributes:
+            self.conexao : a conexão do banco de dados
+    Methods:
+            getConexao() : retorna a conexão do banco de dados.
+            cadastrar(user, email, nome, senha) : recebe as informações para efetuar o cadastro de um usuário.
+            checkUser(user) : checa se o user name informado já está cadastrado.
+            checkEmail(email) : checa se o email informado já está cadastrado.
+
+    """
     def __init__(self):
         self.conexao = mysql.connector.connect(
             host='127.0.0.1',
@@ -17,7 +29,10 @@ class Mydb:
     
     def getConexao(self):
         """
-        
+                Parameters:
+                        None
+                Returns:
+                        retorna a conexão do banco de dados.
         """
         return self.conexao
     
@@ -31,7 +46,7 @@ class Mydb:
                         nome (str): nome do usuário
                         senha (str): hash da senha do usuário
                 Return:
-                        retorna 0 se as informações ainda não estão registradas, 1 se o email jpa está cadastrato,
+                        str: 0 se as informações ainda não estão registradas, 1 se o email já está cadastrato,
                         2 se o user já está cadastrado e 3 se as duas informações já estão cadastradas na base de dados.
 
         """
@@ -67,11 +82,11 @@ class Mydb:
     
     def checkUser(self, user: str):
         """
-        Este módulo faz uma pesquisa pelo user do usuário no banco de dados
+        Este módulo faz uma pesquisa pelo user do usuário no banco de dados.
                 Parameters: 
-                        user (str): nome do usuário
+                        user (str): nome do usuário.
                 Return: 
-                        retorna zero se o user não existir, e 1 se ele já estiver cadastrado
+                        str: 0 se o user não existir, e 1 se ele já estiver cadastrado.
         """
         con = self.getConexao()
         con.reconnect()
@@ -87,13 +102,13 @@ class Mydb:
         
         return str(resposta)
     
-    def checkEmail(self, email: str):
+    def checkEmail(self, email: str) -> str:
         """
         Este módulo faz uma pesquisa pelo email do usuário no banco de dados
                 Parameters: 
                         email (str): email do usuário
                 Return: 
-                        retorna zero se o email não existir, e 1 se ele já estiver cadastrado
+                        str: 0 se o email não existir, e 1 se ele já estiver cadastrado
         """
         con = self.getConexao()
         con.reconnect()
@@ -117,7 +132,7 @@ class Mydb:
                         user (str): nome do usuário
                         hash_senha (str): hash da senha do usuário
                 Return:
-                        retorna 2 se o login ou senha estiverem errados, e 0 se estiverem corretos.
+                        str: 2 se o login ou senha estiverem errados, e 0 se estiverem corretos.
 
         """
         con = self.getConexao()
@@ -136,7 +151,7 @@ class Mydb:
         cursor.close()
         return str(resposta)
 
-    def realizarPostagem(self, post: str, usuario: str) -> None:
+    def realizarPostagem(self, post: str, usuario: str):
         """
         Este módulo recebe o conteúdo da postagem e o nome do usuário e os insere no banco de dados
                 Parameters:
@@ -188,11 +203,17 @@ class Mydb:
         return text
 
     def addText(self):
+        """
+        Este módulo adiciona todas as mensagens do banco de dados na timeline dos usuários.
+                Parameters:
+                        None
+                Returns:
+                        No return 
+        """
         con = self.getConexao()
         con.reconnect()
         cursor = con.cursor()
 
-        text = ''
         comando = 'SELECT * FROM postagem'
         cursor.execute(comando)
         posts = cursor.fetchall()
