@@ -15,7 +15,6 @@ from tela_perfil import Tela_Perfil
 from tela_conversas import Tela_Conversas
 from tela_contatos import Tela_Contatos
 
-from server.mydb import Mydb
 
 ip = 'localhost'
 porta = 5555
@@ -97,7 +96,6 @@ class Main(QMainWindow, Ui_Main):
 
         self.tela_principal.botao_conversas.clicked.connect(self.abrirTelaConversas)
         
-        self.mydb = Mydb()
         
     
     def botaoCadastra(self):
