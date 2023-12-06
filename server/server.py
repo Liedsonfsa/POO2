@@ -37,13 +37,16 @@ def menu(con, cliente):
             con.send(str(resposta).encode())
         elif envio[0] == '4':
             lista = envio.split(',')
+            print(lista)
             resposta = db.realizarPostagem(lista[1], lista[2])
             con.send(str(resposta).encode())
         elif envio[0] == '5':
             text = db.addText()
+            
             con.send(text.encode())
         elif envio[0] == '6':
             text = db.addTextUser(envio[1])
+            
             con.send(text.encode())
         
 

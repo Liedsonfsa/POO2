@@ -122,7 +122,7 @@ class Main(QMainWindow, Ui_Main):
         if not(nome == '' or email == '' or senha == '' or user == ''):
             client_socket.send(dados.encode())
             try:
-                resposta = client_socket.recv(1048576).decode()
+                resposta = client_socket.recv(4096).decode()
             except:
                 print("\nNão foi possível permanecer conectado!\n")
                 client_socket.close()
@@ -167,7 +167,7 @@ class Main(QMainWindow, Ui_Main):
         client_socket.send(dados.encode())
         print(f'dados: {dados}')
         try:
-            resposta = client_socket.recv(1048576).decode()
+            resposta = client_socket.recv(4096).decode()
         except:
             print("\nNão foi possível permanecer conectado!\n")
             client_socket.close()
@@ -223,7 +223,16 @@ class Main(QMainWindow, Ui_Main):
         dados = ','.join(lista)
 
         client_socket.send(dados.encode())
-    
+        client_socket.send('5'.encode())
+
+        try:
+            resposta = client_socket.recv(4096).decode()
+        except:
+            print("\nNão foi possível permanecer conectado!\n")
+            client_socket.close()
+        
+        self.tela_principal.textBrowser.setText(resposta)
+        print(resposta)
 
     
     def abrirPerfil(self):
