@@ -180,6 +180,7 @@ class Mydb:
                 Return:
                         text (str): todas as mensagens do usuário
         """
+        print('addText')
         con = self.getConexao()
         con.reconnect()
         cursor = con.cursor()
@@ -208,6 +209,7 @@ class Mydb:
                 Returns:
                         None
         """
+        print('addTextUser')
         con = self.getConexao()
         con.reconnect()
         cursor = con.cursor()

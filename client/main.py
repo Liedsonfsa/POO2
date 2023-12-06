@@ -1,11 +1,10 @@
 import sys
-from datetime import datetime
+
 import socket
-import random
 
 from hashlib import sha256
 
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox
 
 from tela_cadastro import Tela_Cadastro
@@ -176,7 +175,7 @@ class Main(QMainWindow, Ui_Main):
             self.QtStack.setCurrentIndex(3)
             self.tela_perfil.Nome.setText(user)
             self.tela_perfil.Email.setText('teste')
-            client_socket.send('5'.encode())
+            self.addText()
         else:
             QMessageBox.information(None,'POOII', 'Login ou senha errados!')
             self.tela_inicial.caixa_senha.setText('')
@@ -223,17 +222,8 @@ class Main(QMainWindow, Ui_Main):
         dados = ','.join(lista)
 
         client_socket.send(dados.encode())
-        client_socket.send('5'.encode())
-
-        try:
-            resposta = client_socket.recv(4096).decode()
-        except:
-            print("\nNão foi possível permanecer conectado!\n")
-            client_socket.close()
+        self.addText()
         
-        self.tela_principal.textBrowser.setText(resposta)
-        print(resposta)
-
     
     def abrirPerfil(self):
         """
@@ -308,10 +298,17 @@ class Main(QMainWindow, Ui_Main):
         Este módulo envia um código para o servidor para que ele devolva todas as mensagens referentes a timeline que estão no banco de dados.
         """
         client_socket.send('5'.encode())
-        text = client_socket.recv(4096).decode()
-        self.tela_principal.textBrowser.setText(text)
+        client_socket.send('5'.encode())
+
+        try:
+            resposta = client_socket.recv(4096).decode()
+        except:
+            print("\nNão foi possível permanecer conectado!\n")
+            client_socket.close()
+        
+        self.tela_principal.textBrowser.setText(resposta)
         self.tela_principal.texto_postar.setText('')
-        # self.tcp_cliente.send(post.encode())
+        
 
 
     

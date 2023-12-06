@@ -38,8 +38,8 @@ def menu(con, cliente):
         elif envio[0] == '4':
             lista = envio.split(',')
             print(lista)
-            resposta = db.realizarPostagem(lista[1], lista[2])
-            con.send(str(resposta).encode())
+            db.realizarPostagem(lista[1], lista[2])
+            # con.send(str(resposta).encode())
         elif envio[0] == '5':
             text = db.addText()
             
