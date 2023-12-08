@@ -2,7 +2,6 @@ import mysql.connector
 
 from datetime import datetime
 
-
 class Mydb:
     """
     A classe representa o banco de dados onde vão ser ralizadas as consultas.
@@ -27,10 +26,12 @@ class Mydb:
     
     def getConexao(self):
         """
+        Retorna a conexão do banco de dados.
                 Parameters:
                         None
                 Returns:
-                        retorna a conexão do banco de dados.
+                        
+                        PooledMySQLConnection | MySQLConnection: conexão do banco de dados.
         """
         return self.conexao
     

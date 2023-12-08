@@ -233,7 +233,7 @@ class Main(QMainWindow, Ui_Main):
         self.tela_inicial.caixa_senha.setText('')
 
         user = self.tela_perfil.Nome.text()
-        # self.addTextUser(user)
+    
     
     
     def abrirTelaConversas(self):
@@ -298,7 +298,6 @@ class Main(QMainWindow, Ui_Main):
         Este módulo envia um código para o servidor para que ele devolva todas as mensagens referentes a timeline que estão no banco de dados.
         """
         client_socket.send('5'.encode())
-        client_socket.send('5'.encode())
 
         try:
             resposta = client_socket.recv(4096).decode()
@@ -306,12 +305,13 @@ class Main(QMainWindow, Ui_Main):
             print("\nNão foi possível permanecer conectado!\n")
             client_socket.close()
         
+        if resposta == 'None':
+            resposta = 'Nenhuma mensagem armazenada.'
+        
         self.tela_principal.textBrowser.setText(resposta)
         self.tela_principal.texto_postar.setText('')
-        
+            
 
-
-    
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
