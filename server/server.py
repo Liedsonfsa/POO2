@@ -6,7 +6,7 @@ import mydb
 """
 Servidor onde o cliente deverá se conectar.
 """
-host = '26.212.178.226'
+host = 'localhost'
 porta = 5555
 addr = (host, porta)
 

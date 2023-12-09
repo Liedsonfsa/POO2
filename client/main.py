@@ -15,7 +15,7 @@ from tela_conversas import Tela_Conversas
 from tela_contatos import Tela_Contatos
 
 
-ip = '26.212.178.226'
+ip = 'localhost'
 porta = 5555
 nome = 'liedson'
 addr = ((ip, porta))
@@ -91,12 +91,12 @@ class Main(QMainWindow, Ui_Main):
 
         self.tela_principal.botao_inicio.clicked.connect(self.sairSistema)
 
-        self.tela_inicial.botao_sair.clicked.connect(QtWidgets.qApp.quit)
+        self.tela_inicial.botao_sair.clicked.connect(self.desconectar)
 
         self.tela_principal.botao_conversas.clicked.connect(self.abrirTelaConversas)
         self.tela_principal.botao_postar.clicked.connect(self.postar)
         
-        
+    
     
     def botaoCadastra(self):
         """
@@ -308,8 +308,14 @@ class Main(QMainWindow, Ui_Main):
         if resposta == 'None':
             resposta = 'Nenhuma mensagem armazenada.'
         
+        print(resposta)
         self.tela_principal.textBrowser.setText(resposta)
         self.tela_principal.texto_postar.setText('')
+    
+    def desconectar(self):
+        client_socket.send('0'.encode())
+        self.tela_inicial.botao_sair.clicked.connect(QtWidgets.qApp.quit)
+    
             
 
 

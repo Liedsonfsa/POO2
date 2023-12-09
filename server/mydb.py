@@ -181,7 +181,7 @@ class Mydb:
                 Return:
                         text (str): todas as mensagens do usuário
         """
-        print('addText')
+        print('addTextUser')
         con = self.getConexao()
         con.reconnect()
         cursor = con.cursor()
@@ -202,19 +202,19 @@ class Mydb:
 
         return text
 
-    def addText(self):
+    def addText(self) -> str:
         """
         Este módulo adiciona todas as mensagens do banco de dados na timeline dos usuários.
                 Parameters:
                         None
                 Returns:
-                        None
+                        str : as mensagens
         """
-        print('addTextUser')
+        print('addText')
         con = self.getConexao()
         con.reconnect()
         cursor = con.cursor()
-
+        
         comando = 'SELECT * FROM postagem'
         cursor.execute(comando)
         posts = cursor.fetchall()
@@ -228,8 +228,6 @@ class Mydb:
         
         con.commit()
         con.close()
-        
-        # tela.textBrowser.setText(text)
+        print(text)
         
         return text
-
