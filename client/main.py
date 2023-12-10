@@ -175,7 +175,7 @@ class Main(QMainWindow, Ui_Main):
             self.QtStack.setCurrentIndex(3)
             self.tela_perfil.Nome.setText(user)
             self.tela_perfil.Email.setText('teste')
-            self.addText()
+            # self.addText()
         else:
             QMessageBox.information(None,'POOII', 'Login ou senha errados!')
             self.tela_inicial.caixa_senha.setText('')
@@ -314,7 +314,7 @@ class Main(QMainWindow, Ui_Main):
     
     def desconectar(self):
         client_socket.send('0'.encode())
-        self.tela_inicial.botao_sair.clicked.connect(QtWidgets.qApp.quit)
+        # self.tela_inicial.botao_sair.clicked.connect(QtWidgets.qApp.quit)
     
             
 
