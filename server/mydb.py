@@ -6,16 +6,29 @@ class Mydb:
     """
     A classe representa o banco de dados onde vão ser ralizadas as consultas.
 
-    Attributes:
-            self.conexao : a conexão do banco de dados
-    Methods:
-            getConexao() : retorna a conexão do banco de dados.
-            cadastrar(user, email, nome, senha) : recebe as informações para efetuar o cadastro de um usuário.
-            checkUser(user) : checa se o user name informado já está cadastrado.
-            checkEmail(email) : checa se o email informado já está cadastrado.
+    Attributes
+    ----------
+        conexao : MySQLConnection
+            a conexão do banco de dados
+    
+    Methods
+    -------
+        getConexao(None)
+            retorna a conexão do banco de dados.
+        cadastrar(user, email, nome, senha)
+            recebe as informações para efetuar o cadastro de um usuário.
+        checkUser(user)
+            checa se o user name informado já está cadastrado.
+        checkEmail(email)
+            checa se o email informado já está cadastrado.
 
     """
     def __init__(self):
+        """
+        Parameters
+        ----------
+            None
+        """
         self.conexao = mysql.connector.connect(
             host='127.0.0.1',
             user='root',
@@ -27,11 +40,15 @@ class Mydb:
     def getConexao(self):
         """
         Retorna a conexão do banco de dados.
-                Parameters:
-                        None
-                Returns:
-                        
-                        PooledMySQLConnection | MySQLConnection: conexão do banco de dados.
+        
+        Parameters
+        ----------
+            None
+        
+        Returns
+        -------  
+            MySQLConnection:
+                conexão do banco de dados.
         """
         return self.conexao
     
@@ -39,14 +56,23 @@ class Mydb:
         """
         Este módulo recebe as informações necessárias para o cadastro, e faz uma pesquisa no banco de dados pelo user e o email
         informados, caso já sejam cadastrados o novo usuário não sera inserido.
-                Parameters: 
-                        user (str): user do usuário
-                        email (str): email do usuário
-                        nome (str): nome do usuário
-                        senha (str): hash da senha do usuário
-                Return:
-                        str: 0 se as informações ainda não estão registradas, 1 se o email já está cadastrato,
-                        2 se o user já está cadastrado e 3 se as duas informações já estão cadastradas na base de dados.
+        
+        Parameters
+        ---------- 
+            user : str
+                user do usuário
+            email : str
+                email do usuário
+            nome : str
+                nome do usuário
+            senha : str
+                hash da senha do usuário
+        
+        Returns
+        -------
+            resposta : str
+                0 se as informações ainda não estão registradas, 1 se o email já está cadastrato,
+                2 se o user já está cadastrado e 3 se as duas informações já estão cadastradas na base de dados.
 
         """
         con = self.getConexao()
@@ -82,10 +108,16 @@ class Mydb:
     def checkUser(self, user: str):
         """
         Este módulo faz uma pesquisa pelo user do usuário no banco de dados.
-                Parameters: 
-                        user (str): nome do usuário.
-                Return: 
-                        str: 0 se o user não existir, e 1 se ele já estiver cadastrado.
+        
+        Parameters
+        ----------
+            user : str
+                nome do usuário.
+        
+        Returns
+        -------
+            resposta : str 
+                0 se o user não existir, e 1 se ele já estiver cadastrado.
         """
         con = self.getConexao()
         con.reconnect()
@@ -104,10 +136,16 @@ class Mydb:
     def checkEmail(self, email: str) -> str:
         """
         Este módulo faz uma pesquisa pelo email do usuário no banco de dados
-                Parameters: 
-                        email (str): email do usuário
-                Return: 
-                        str: 0 se o email não existir, e 1 se ele já estiver cadastrado
+        
+        Parameters
+        ---------- 
+            email : str
+                email do usuário
+        
+        Returns
+        ------- 
+            resposta : str
+                0 se o email não existir, e 1 se ele já estiver cadastrado
         """
         con = self.getConexao()
         con.reconnect()
@@ -127,11 +165,18 @@ class Mydb:
         """
         Este módulo recebe o user e o hash da senha do usuário, e efetua uma busca pelo usuário no banco de dsdos,
         caso o user e o hash sejam os mesmos dos encontrados no banco de dados, o acesso é permitido.
-                Parameters:
-                        user (str): nome do usuário
-                        hash_senha (str): hash da senha do usuário
-                Return:
-                        str: 2 se o login ou senha estiverem errados, e 0 se estiverem corretos.
+        
+        Parameters
+        ----------
+            user : str 
+                nome do usuário
+            hash_senha : str
+                hash da senha do usuário
+        
+        Returns
+        -------
+            resposta : str
+                2 se o login ou senha estiverem errados, e 0 se estiverem corretos.
 
         """
         con = self.getConexao()
@@ -153,11 +198,17 @@ class Mydb:
     def realizarPostagem(self, post: str, usuario: str):
         """
         Este módulo recebe o conteúdo da postagem e o nome do usuário e os insere no banco de dados
-                Parameters:
-                        post (str): conteúdo da postagem
-                        usuario (str): nome fo usuário
-                Return:
-                        None
+
+        Parameters
+        ----------
+            post : str
+                conteúdo da postagem
+            usuario : str
+                nome do usuário
+        
+        Returns
+        -------
+                None
         """
         con = self.getConexao()
         con.reconnect()
@@ -176,10 +227,16 @@ class Mydb:
         """
         Este módulo recebe o nome do usuário e seleciona todas as mensagens desse usuário no banco de dados,
         e as adiciona na tela de perfil do usuário.
-                Parameters:
-                        user (str): nome do usuário
-                Return:
-                        text (str): todas as mensagens do usuário
+
+        Parameters
+        ----------
+            user : str
+                nome do usuário
+        
+        Returns
+        -------
+            text : str
+                todas as mensagens do usuário
         """
         print('addTextUser')
         con = self.getConexao()
@@ -205,10 +262,15 @@ class Mydb:
     def addText(self) -> str:
         """
         Este módulo adiciona todas as mensagens do banco de dados na timeline dos usuários.
-                Parameters:
-                        None
-                Returns:
-                        str : as mensagens
+        
+        Parameters
+        ----------
+            None
+        
+        Returns
+        -------
+            text : str
+                as mensagens
         """
         print('addText')
         con = self.getConexao()

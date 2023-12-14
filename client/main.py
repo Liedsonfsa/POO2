@@ -100,6 +100,8 @@ class Main(QMainWindow, Ui_Main):
     
     def botaoCadastra(self):
         """
+        Cadastra o usuário.
+
         Este módulo captura as informações preenchidas pelo usuário e se todos os campos estiverem preenchidos, as envia para o servidor.
         Caso as informações sejam válidas, o usuário é cadastrado.
         """
@@ -150,6 +152,8 @@ class Main(QMainWindow, Ui_Main):
     
     def logar(self):
         """
+        Loga o usuário ao sistema.
+
         Este módulo captura as informações fornecidas pelo usuário e caso sejam válidas, as envia para o servidor.
         Caso as informações estejam corretas, a conexão é permitida.
         """
@@ -208,6 +212,8 @@ class Main(QMainWindow, Ui_Main):
 
     def postar(self):
         """
+        Posta a mensagem enviada.
+
         Este módulo captura o conteúdo da postagem e o nome do usuário, e as envia para o servidor.
         """
         print('postar clicked')
@@ -314,9 +320,7 @@ class Main(QMainWindow, Ui_Main):
     
     def desconectar(self):
         client_socket.send('0'.encode())
-        # self.tela_inicial.botao_sair.clicked.connect(QtWidgets.qApp.quit)
-    
-            
+
 
 
 if __name__ == '__main__':
