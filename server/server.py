@@ -37,9 +37,8 @@ class Servidor:
         """
         self.con = con
         self.cliente = cliente
-        pass
     
-
+    
     def menu(self):
         """
         Onde o servidor funciona.
@@ -89,9 +88,7 @@ class Servidor:
                 text = db.addTextUser(envio[1])
                 
                 self.con.send(text.encode())
-            
-
-
+    
     def main(self):
         """
         Onde o servidor fica ativo.
@@ -112,6 +109,8 @@ class Servidor:
 if __name__ == "__main__":
     
     try:
-        Servidor.main()
+        Servidor.main(Servidor)
     finally:
         print('não deu...')
+
+# https://www.datacamp.com/tutorial/a-complete-guide-to-socket-programming-in-python
