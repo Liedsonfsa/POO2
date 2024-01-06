@@ -39,7 +39,7 @@ class Servidor:
         self.cliente = cliente
     
     
-    def menu(self):
+    def menu(self, con):
         """
         Onde o servidor funciona.
 
@@ -58,7 +58,7 @@ class Servidor:
         conectado = True
 
         while conectado:
-            envio = self.con.recv(4096).decode()
+            envio = con.recv(4096).decode()
             
             if envio[0] == '0':
                 print(f"Mensagem 0 Servidor: {envio}")
@@ -100,8 +100,8 @@ class Servidor:
 
         while True:
             con, cliente = serv_socket.accept()
-            server = Servidor(con,  cliente)
-            thread = threading.Thread(target=self.menu, args=(server.con, server.cliente))
+            # server = Servidor(con,  cliente)
+            thread = threading.Thread(target=self.menu, args=(con, cliente))
             thread.start()
         
 
