@@ -10,6 +10,20 @@ addr = (host, porta)
 db = mydb.Mydb()
 
 def menu(con, cliente):
+    """
+        Onde o servidor funciona.
+
+        Recebe as requisições do cliente e pode ou inserir informações no banco de dados ou retornar informações para o cliente.
+
+        Parameters
+        ----------
+                con : socket do servidor
+                cliente : endereço do cliente
+        
+        Returns
+        -------
+                None
+        """
 
     conectado = True
 
@@ -46,6 +60,9 @@ def menu(con, cliente):
 
 
 def main():
+    """
+        Onde o servidor fica ativo.
+    """
     print("[INICIADO] Aguardando conexão...")
     serv_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     serv_socket.bind(addr)
