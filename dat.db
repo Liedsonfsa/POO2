@@ -1,0 +1,103 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `mydb` ;
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8mb3 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`usuario`
+-- -----------------------------------------------------
+# DROP TABLE IF EXISTS `mydb`.`usuario` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`usuario` (
+  `user` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `nome` VARCHAR(150) NOT NULL,
+  `senha` VARCHAR(1000) NOT NULL,
+  `contatos` VARCHAR(100) NULL DEFAULT NULL,
+  `solicitacoes` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`user`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`postagem`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`postagem` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`postagem` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `data` DATETIME NULL DEFAULT NULL,
+  `usuario_user` VARCHAR(100) NOT NULL,
+  `mensagem` VARCHAR(200) NOT NULL,
+  `likes` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_postagem_usuario1_idx` (`usuario_user` ASC) VISIBLE,
+  CONSTRAINT `fk_postagem_usuario1`
+    FOREIGN KEY (`usuario_user`)
+    REFERENCES `mydb`.`usuario` (`user`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`comentario`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`comentario` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`comentario` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `mensagem` VARCHAR(100) NOT NULL,
+  `data` DATETIME NULL DEFAULT NULL,
+  `likes` INT NOT NULL,
+  `postagem_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_comentario_postagem1_idx` (`postagem_id` ASC) VISIBLE,
+  CONSTRAINT `fk_comentario_postagem1`
+    FOREIGN KEY (`postagem_id`)
+    REFERENCES `mydb`.`postagem` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`conversa`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`conversa` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`conversa` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user1` VARCHAR(100) NOT NULL,
+  `user2` VARCHAR(100) NOT NULL,
+  `mensagens1` VARCHAR(200) NULL DEFAULT NULL,
+  `mensagens2` VARCHAR(200) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`grupo`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `mydb`.`grupo` ;
+
+CREATE TABLE IF NOT EXISTS `mydb`.`grupo` (
+  `nome` VARCHAR(100) NOT NULL,
+  `membros` VARCHAR(100) NULL DEFAULT NULL,
+  `postagens` INT NULL DEFAULT NULL,
+  `adms` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`nome`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

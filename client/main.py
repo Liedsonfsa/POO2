@@ -136,9 +136,12 @@ class Main(QMainWindow, Ui_Main):
                 elif resposta == '1':
                     QMessageBox.information(None,'Email', 'Email já cadastrado!')
                     self.tela_cadastro.caixa_email.setText('')
-                else:
+                elif resposta == '2':
                     QMessageBox.information(None,'Usuário', 'Nome de usuário já cadastrado!')
                     self.tela_cadastro.caixa_usuario.setText('')
+                else:
+                    QMessageBox.information(None,'Email', 'Email inválido!')
+                    self.tela_cadastro.caixa_email.setText('')
             else:
                 QMessageBox.information(None,'Cadastro', 'Cadastro realizado com sucesso!')
                 self.tela_cadastro.caixa_email.setText('')
@@ -147,7 +150,7 @@ class Main(QMainWindow, Ui_Main):
                 self.tela_cadastro.caixa_usuario.setText('')
                 self.QtStack.setCurrentIndex(0)
         else:
-            QMessageBox.information(None,'POOII', 'Todos os valores devem ser preenchidos!')
+            QMessageBox.information(None,'Cadastro', 'Todos os valores devem ser preenchidos!')
     
     
     def logar(self):
@@ -180,6 +183,7 @@ class Main(QMainWindow, Ui_Main):
             self.tela_perfil.Nome.setText(user)
             self.tela_perfil.Email.setText('teste')
             # self.addText()
+        
         else:
             QMessageBox.information(None,'POOII', 'Login ou senha errados!')
             self.tela_inicial.caixa_senha.setText('')

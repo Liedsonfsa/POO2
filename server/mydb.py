@@ -72,7 +72,7 @@ class Mydb:
         -------
             resposta : str
                 0 se as informações ainda não estão registradas, 1 se o email já está cadastrato,
-                2 se o user já está cadastrado e 3 se as duas informações já estão cadastradas na base de dados.
+                2 se o user já está cadastrado, 3 se as duas informações já estão cadastradas na base de dados, e 4 se a extensão do email não for válida.
 
         """
         con = self.getConexao()
@@ -80,21 +80,26 @@ class Mydb:
         
         new = (user, email, nome, senha)
         cursor = con.cursor()
-        search_user = 'SELECT * FROM usuario WHERE user = %s'
-        search_email = 'SELECT * FROM usuario WHERE email = %s'
+        # search_user = 'SELECT * FROM usuario WHERE user = %s'
+        # search_email = 'SELECT * FROM usuario WHERE email = %s'
         new_user = "INSERT INTO usuario (user, email, nome, senha) VALUES (%s, %s, %s, %s)"
 
         
-        cursor.execute(search_email, (email, ))
-        e = cursor.fetchone()
-        cursor.execute(search_user, (user, ))
-        u = cursor.fetchone()
+        # cursor.execute(search_email, (email, ))
+        e = self.checkEmail(email)
+        # e = cursor.fetchone()
+        # cursor.execute(search_user, (user, ))
+        # u = cursor.fetchone()
+        u = self.checkUser(user)
         print(f'u: {u}, e: {e}')
         resposta = 0
-        if u != None or e != None:
-            if u != None and e != None:
+        checkExt = self.checkExt(email)
+        if checkExt:
+            return '4'
+        if u != '0' or e != '0':
+            if u != '0' and e != '0':
                 resposta = 3
-            elif e != None:
+            elif e != '0':
                 resposta = 1
             else:
                 resposta = 2
@@ -159,6 +164,26 @@ class Mydb:
         if usuario == None:
             resposta = 0
         
+        con.close()
+        cursor.close()
+        
+        return str(resposta)
+
+    def validate_login(self, user, hash_senha):
+        con = self.getConexao()
+        con.reconnect()
+        cursor = con.cursor()
+        comando = "SELECT * FROM usuario WHERE user = %s"
+        cursor.execute(comando, (user, ))
+        resposta = 1
+        usuario = cursor.fetchone()
+        print(usuario)
+        if usuario != None and usuario[3] == hash_senha:
+            resposta = 0
+        
+        con.close()
+        cursor.close()
+
         return str(resposta)
 
     def efetuarLogin(self, user: str, hash_senha: str):
@@ -179,21 +204,30 @@ class Mydb:
                 2 se o login ou senha estiverem errados, e 0 se estiverem corretos.
 
         """
-        con = self.getConexao()
-        con.reconnect()
-        cursor = con.cursor()
-        comando = "SELECT * FROM usuario WHERE user = %s"
         print(f'user: {user}, hash: {hash_senha}')
-        cursor.execute(comando, (user, ))
-        usuario = cursor.fetchone()
-        print(usuario)
-        resposta = 2
-        if usuario != None and usuario[3] == hash_senha:
-            resposta = 0
+        validation = self.validate_login(user, hash_senha)
         
-        con.close()
-        cursor.close()
-        return str(resposta)
+        return validation
+    
+    def checkExt(self, email):
+        
+        size = len(email)
+        extensions = "@gmail.com"
+
+        size = len(email)
+
+        limit = size - 10
+
+        ext = email[limit:]
+
+        true = False
+
+        if ext == extensions:
+            true = not true
+
+        
+        return true
+    
 
     def realizarPostagem(self, post: str, usuario: str):
         """

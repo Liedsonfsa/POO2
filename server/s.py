@@ -23,7 +23,7 @@ def menu(con, cliente):
         Returns
         -------
                 None
-        """
+    """
 
     conectado = True
 
