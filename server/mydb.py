@@ -21,6 +21,8 @@ class Mydb:
             checa se o user name informado já está cadastrado.
         checkEmail(email)
             checa se o email informado já está cadastrado.
+        checkExt(email)
+            checa se o email é válido.
 
     """
     def __init__(self):
@@ -80,16 +82,11 @@ class Mydb:
         
         new = (user, email, nome, senha)
         cursor = con.cursor()
-        # search_user = 'SELECT * FROM usuario WHERE user = %s'
-        # search_email = 'SELECT * FROM usuario WHERE email = %s'
+    
         new_user = "INSERT INTO usuario (user, email, nome, senha) VALUES (%s, %s, %s, %s)"
 
-        
-        # cursor.execute(search_email, (email, ))
         e = self.checkEmail(email)
-        # e = cursor.fetchone()
-        # cursor.execute(search_user, (user, ))
-        # u = cursor.fetchone()
+        
         u = self.checkUser(user)
         print(f'u: {u}, e: {e}')
         resposta = 0
@@ -210,8 +207,20 @@ class Mydb:
         
         return validation
     
-    def checkExt(self, email):
+    def checkExt(self, email : str) -> bool:
+        """
+        Este módulo checa se a extensão do email é válida.
+
+        Parameters
+        ----------
+            email : str
+                email do usuário
         
+        Returns
+        -------
+            isValid : bool
+                retorna True se for válido, e False se não for
+        """
         size = len(email)
         extensions = "@gmail.com"
 
