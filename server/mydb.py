@@ -94,7 +94,8 @@ class Mydb:
         print(f'u: {u}, e: {e}')
         resposta = 0
         checkExt = self.checkExt(email)
-        if checkExt:
+        print(checkExt)
+        if checkExt == False:
             return '4'
         if u != '0' or e != '0':
             if u != '0' and e != '0':
@@ -219,14 +220,14 @@ class Mydb:
         limit = size - 10
 
         ext = email[limit:]
+        print(ext)
 
-        true = False
+        isValid = False
 
         if ext == extensions:
-            true = not true
-
+            isValid = True
         
-        return true
+        return isValid
     
 
     def realizarPostagem(self, post: str, usuario: str):
